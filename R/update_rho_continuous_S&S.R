@@ -54,6 +54,32 @@ metropolis.rho <- function(rho.old, psi, tau = 1, W,
   return(list(rho = rho.old, accepted = accepted))
 }
 
+#' Metropolis-Hastrings update of the CAR parameter
+#'
+#' This function receives a value of rho and generates a new value from its posterior distribution given by the spike & slab prior.
+#' It uses a random walk Metropolis-Hastrings move.
+#'
+#' @import LaplacesDemon
+#' @export
+#'
+#' @param rho.old
+#' @param psi
+#' @param tau
+#' @param W
+#' @param lambda_spike
+#' @param lambda_slab
+#' @param a_spike
+#' @param b_spike
+#' @param a_slab
+#' @param b_slab
+#' @param sigma.rho
+#'
+#' @return
+#'
+#' @examples
+#'
+
+
 update_rho_continuous <- function(rho.old, # a vector of length K-1
                        psi,  # the n x (K-1) matrix
                        tau = 1, W,
