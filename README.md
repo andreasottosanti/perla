@@ -2,4 +2,4 @@
 
 (PERLA) by A. Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
 
-R Package under development.
+R Package under development
