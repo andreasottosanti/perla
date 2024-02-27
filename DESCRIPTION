@@ -2,13 +2,8 @@ Package: perla
 Type: Package
 Title: PEnalized Regression and Local Aggregation (PERLA)
 Version: 0.1.0
-Author@R: c(person("Andrea", "Sottosanti", role = c("aut", "cre")),
-person("Pietro", "Belloni", role = c("aut")),
-person("Enrico", "Bovo", role = c("aut")),
-person("Giovanna", "Boccuzzo", role = c("aut")))
-Maintainer: Andrea Sottosanti <andrea.sottosanti@unipd.it>
+Author@R: c(person("Andrea", "Sottosanti", email = "andrea.sottosanti@unipd.it", role = c("aut", "cre")), person("Pietro", "Belloni", email = "pietro.belloni@unipd.it", role = c("aut")), person("Enrico", "Bovo", email = "enrico.bovo@unipd.it", role = c("aut")), person("Giovanna", "Boccuzzo", email = "giovanna.boccuzzo@unipd.it", role = c("aut")))
 Description: PEnalized Regression and Local Aggregation (PERLA)
-License: What license is it under?
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
