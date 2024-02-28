@@ -10,5 +10,5 @@ recover.loglikelihood(y, Z, Mu, Sigma)
 \item{Sigma}{}
 }
 \description{
-This function returns the log-likelihood value at each interation of the MCMC.
+This function returns the log-likelihood value at each iteration of the MCMC.
 }

@@ -1,8 +1,7 @@
 #' A posteriori log-likelihood computation
 #'
-#' This function returns the log-likelihood value at each interation of the MCMC.
+#' This function returns the log-likelihood value at each iteration of the MCMC.
 #'
-#' @import progress
 #' @param y
 #' @param Z
 #' @param Mu

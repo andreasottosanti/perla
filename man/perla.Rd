@@ -6,6 +6,7 @@
 \usage{
 perla(
   x,
+  W = NULL,
   K,
   R = 10^4,
   prior.rho = "const",
@@ -16,7 +17,7 @@ perla(
 )
 }
 \arguments{
-\item{x}{an \code{n} x \code{d} matrix, where \code{n} is the number of spatial areas and \code{d} is the number of diseases}
+\item{x}{can be either a \code{SpatialPolygonsDataFrame} object or an \code{n} x \code{d} matrix, where \code{n} is the number of spatial areas and \code{d} is the number of diseases.}
 
 \item{K}{the number of clusters}
 
