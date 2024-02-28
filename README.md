@@ -1,5 +1,5 @@
-*PEnalized Regression and Local Aggregation*
+*PEnalized Regression and Local Aggregation* (PERLA)
 
-(PERLA) by A. Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
+by A. Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
 
 R Package under development

@@ -30,7 +30,7 @@ perla <- function(x, W = NULL, K, R = 10^4,
                   rho.value = 0.99,
                   mu0 = NULL,
                   Sigma0 = NULL){
-  if(class(x) == "SpatialPolygonsDataFrame"){
+  if("SpatialPolygonsDataFrame" %in% class(x)){
     if(is.null(W)) W <- poly2adjmat(map)
     x <- x@data
   }
@@ -108,6 +108,6 @@ perla <- function(x, W = NULL, K, R = 10^4,
     }
   }
 
-  return(list(Mu = Mu, Z = Z, Sigma = Sigma, Rho = Rho, acceptance.rho = accentance.rho, y = y))
+  return(list(Mu = Mu, Z = Z, Sigma = Sigma, Rho = Rho, acceptance.rho = acceptance.rho, y = y))
 
 }
