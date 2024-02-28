@@ -1,4 +1,49 @@
-library(LaplacesDemon)
+#' Metropolis-Hastrings update of the CAR parameter
+#'
+#' This function receives a value of rho and generates a new value from its posterior distribution given by the spike & slab prior.
+#' It uses a random walk Metropolis-Hastrings move.
+#'
+#' @export
+#'
+#' @param rho.old
+#' @param psi
+#' @param tau
+#' @param W
+#' @param lambda_spike
+#' @param lambda_slab
+#' @param a_spike
+#' @param b_spike
+#' @param a_slab
+#' @param b_slab
+#' @param sigma.rho
+#'
+#' @return
+#'
+#' @examples
+#'
+
+
+update_rho_continuous <- function(rho.old, # a vector of length K-1
+                       psi,  # the n x (K-1) matrix
+                       tau = 1, W,
+                       lambda_spike = 3,
+                       lambda_slab = 7,
+                       a_spike = .5,
+                       b_spike = 18,
+                       a_slab = 18,
+                       b_slab = 2,
+                       sigma.rho = 1){
+  if(length(sigma.rho) == 1 & !is.vector(psi)) sigma.rho <- rep(sigma.rho, ncol(psi))
+  if(is.vector(psi)) psi <- matrix(psi, ncol = 1)
+  acceptances <- rhos <- numeric(ncol(psi))
+  for(k in 1:ncol(psi)){
+    rho.metropolis.results <- metropolis.rho(rho.old = rho.old[k], psi = psi[,k], tau = tau, W = W, lambda_spike, lambda_slab, a_spike, b_spike, a_slab, b_slab, sigma.rho = sigma.rho[k])
+    acceptances[k] <- acceptances[k]+rho.metropolis.results$accepted
+    rhos[k] <- rho.metropolis.results$rho
+  }
+  return(list(rho = rhos, accepted = acceptances))
+}
+
 
 logit <- function(x) log(x/(1-x))
 expit <- function(x) exp(x)/(1+exp(x))
@@ -52,53 +97,6 @@ metropolis.rho <- function(rho.old, psi, tau = 1, W,
     rho.old <- rho.star
   }
   return(list(rho = rho.old, accepted = accepted))
-}
-
-#' Metropolis-Hastrings update of the CAR parameter
-#'
-#' This function receives a value of rho and generates a new value from its posterior distribution given by the spike & slab prior.
-#' It uses a random walk Metropolis-Hastrings move.
-#'
-#' @import LaplacesDemon
-#' @export
-#'
-#' @param rho.old
-#' @param psi
-#' @param tau
-#' @param W
-#' @param lambda_spike
-#' @param lambda_slab
-#' @param a_spike
-#' @param b_spike
-#' @param a_slab
-#' @param b_slab
-#' @param sigma.rho
-#'
-#' @return
-#'
-#' @examples
-#'
-
-
-update_rho_continuous <- function(rho.old, # a vector of length K-1
-                       psi,  # the n x (K-1) matrix
-                       tau = 1, W,
-                       lambda_spike = 3,
-                       lambda_slab = 7,
-                       a_spike = .5,
-                       b_spike = 18,
-                       a_slab = 18,
-                       b_slab = 2,
-                       sigma.rho = 1){
-  if(length(sigma.rho) == 1 & !is.vector(psi)) sigma.rho <- rep(sigma.rho, ncol(psi))
-  if(is.vector(psi)) psi <- matrix(psi, ncol = 1)
-  acceptances <- rhos <- numeric(ncol(psi))
-  for(k in 1:ncol(psi)){
-    rho.metropolis.results <- metropolis.rho(rho.old = rho.old[k], psi = psi[,k], tau = tau, W = W, lambda_spike, lambda_slab, a_spike, b_spike, a_slab, b_slab, sigma.rho = sigma.rho[k])
-    acceptances[k] <- acceptances[k]+rho.metropolis.results$accepted
-    rhos[k] <- rho.metropolis.results$rho
-  }
-  return(list(rho = rhos, accepted = acceptances))
 }
 
 

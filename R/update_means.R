@@ -1,4 +1,4 @@
-update_centroids <- function(y, Z, Sigma, mu0, Sigma0){
+update_means <- function(y, Z, Sigma, mu0, Sigma0){
   if(is.vector(Z)) Z <- matrix(Z, ncol = 1)
   K <- ncol(Z)
   invSigma <- solve(Sigma)
