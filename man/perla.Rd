@@ -13,7 +13,8 @@ perla(
   p.spike = 0.5,
   rho.value = 0.99,
   mu0 = NULL,
-  Sigma0 = NULL
+  Sigma0 = NULL,
+  initialization = NULL
 )
 }
 \arguments{
@@ -27,7 +28,9 @@ perla(
 If \code{disc}, it assumes that rho can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}.
 If \code{cont}, it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)} (with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
 
-\item{Sigma0}{}
+\item{rho.value}{default \code{0.99}}
+
+\item{initialization}{the output of a \code{perla} function that is used as a starting point of the algorithm}
 }
 \description{
 This function estimates the PERLA model using the Markov Chain Monte Carlo algorithm.

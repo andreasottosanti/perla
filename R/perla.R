@@ -14,7 +14,7 @@
 #' @param prior.rho set the type of prior on the rho parameter of the CAR. If `const`, it assumes a fixed value, that is `rho.value`.
 #' If `disc`, it assumes that rho can be equal to `0` (with probability `p.spike`) or `rho.value`.
 #' If `cont`, it assumes that rho is generated from a mixture of a `dbeta(x,2,18)` (with probability `p.spike`) or a `dbeta(x,18,2)`.
-#' @param rho.value
+#' @param rho.value default `0.99`
 #' @param p.spike
 #' @param mu0
 #' @param Sigma0
@@ -47,7 +47,7 @@ perla <- function(x, W = NULL, K, R = 10^4,
   Rho <- matrix(0, R, K-1)
   Psi <- Omega <- array(0, dim = c(n, K-1, R))
   Mu <- array(0, dim = c(K, d, R))
-  Z <- array(0, dim = c(n, K, R))
+  Z <- Prob <- array(0, dim = c(n, K, R))
 
 # Default hyperparameters -------------------------------------------------
   if(is.null(mu0)) mu0 <- rep(0, d)
@@ -74,9 +74,9 @@ perla <- function(x, W = NULL, K, R = 10^4,
   detOmega <- determinant((diag(rowSums(W)) - rho.value * W)/tau, logarithm = T)$mod
   acceptance.rho <- numeric(K-1)
 
-  pb <- progress_bar$new(total = R) # progress bar
+  pb <- progress::progress_bar$new(total = R) # progress bar
   for(r in 2:R){
-    pb$tick()
+    progress::pb$tick()
 
     # ---overwrite
     Mu[,,r] <- Mu[,,r-1]
@@ -95,7 +95,7 @@ perla <- function(x, W = NULL, K, R = 10^4,
     updated.psi.omega <- update.psi.omega(psi = Psi[,,r], omega = Omega[,,r], Z = Z[,,r], D = D, W = W, tau = tau, rho = Rho[r,], apply.mean.correction = F)
     Psi[,,r] <- updated.psi.omega$psi
     Omega[,,r] <- updated.psi.omega$omega
-
+    Prob[,,r] <- convert.to.probabilities(Psi[,,r])
 
     # --update rho
 
@@ -118,6 +118,6 @@ perla <- function(x, W = NULL, K, R = 10^4,
     }
   }
 
-  return(list(Mu = Mu, Z = Z, Sigma = Sigma, Rho = Rho, acceptance.rho = acceptance.rho, y = y))
+  return(list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Rho = Rho, acceptance.rho = acceptance.rho, y = y))
 
 }
