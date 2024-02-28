@@ -2,20 +2,21 @@
 #'
 #' This function returns the log-likelihood value at each iteration of the MCMC.
 #'
-#' @param y
-#' @param Z
-#' @param Mu
-#' @param Sigma
+#' @param value
+#' @param burnin
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #'
-recover.loglikelihood <- function(y,
-                                  Z,  # n x K x R
-                                  Mu,    # K x d x R
-                                  Sigma){
+recover.loglikelihood <- function(value, burnin = NULL){
+  if(is.null(burnin)) to.keep <- 1:dim(value$Z)[3] else
+    to.keep <- setdiff(1:dim(value$Z)[3], burnin)
+  y <- value$y
+  Z <- value$Z[,,to.keep]  # n x K x R
+  Mu <- value$Mu[,,to.keep]    # K x d x R
+  if(is.matrix(value$Sigma)) Sigma <- value$Sigma else Sigma <- Sigma[,,to.keep]
   value <- 0
   n <- nrow(y)
   d <- ncol(y)

@@ -4,10 +4,10 @@
 \alias{recover.loglikelihood}
 \title{A posteriori log-likelihood computation}
 \usage{
-recover.loglikelihood(y, Z, Mu, Sigma)
+recover.loglikelihood(value, burnin = NULL)
 }
 \arguments{
-\item{Sigma}{}
+\item{burnin}{}
 }
 \description{
 This function returns the log-likelihood value at each iteration of the MCMC.
