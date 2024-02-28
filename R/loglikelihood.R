@@ -10,6 +10,7 @@
 #'
 #' @examples
 #'
+
 recover.loglikelihood <- function(values, burnin = NULL){
   if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else
     to.keep <- setdiff(1:dim(values$Z)[3], burnin)
