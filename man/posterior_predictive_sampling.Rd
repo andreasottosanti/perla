@@ -5,10 +5,12 @@
 \title{Generate values from the posterior predictive distribution
 This function generate a new dataset with the same dimension of the analyzed one from the posterior predictive distribution}
 \usage{
-posterior_predictive_sampling(Z, Mu, Sigma)
+posterior_predictive_sampling(values, burnin = NULL)
 }
 \arguments{
-\item{Sigma}{}
+\item{values}{the output of \code{perla} function}
+
+\item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
 }
 \description{
 Generate values from the posterior predictive distribution

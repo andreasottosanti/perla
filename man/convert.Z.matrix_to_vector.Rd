@@ -8,7 +8,10 @@ This function convert the selection matrix \code{Z} used in the model into a vec
 convert.Z.matrix_to_vector(Z)
 }
 \arguments{
-\item{Z}{}
+\item{Z}{an \code{n} x \code{K} matrix, or an array of dimension \code{n} x \code{K} x \code{R} (which is the output of the function \code{perla}).}
+}
+\value{
+A vector of dimension \code{n} or a matrix of dimension \code{n} x \code{R} containing the clustering labels.
 }
 \description{
 Z from matrix to vector

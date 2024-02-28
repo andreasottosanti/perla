@@ -4,10 +4,12 @@
 \alias{recover.loglikelihood}
 \title{A posteriori log-likelihood computation}
 \usage{
-recover.loglikelihood(value, burnin = NULL)
+recover.loglikelihood(values, burnin = NULL)
 }
 \arguments{
-\item{burnin}{}
+\item{values}{the output of \code{perla} function}
+
+\item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
 }
 \description{
 This function returns the log-likelihood value at each iteration of the MCMC.

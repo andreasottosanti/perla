@@ -2,34 +2,33 @@
 #'
 #' This function returns the log-likelihood value at each iteration of the MCMC.
 #'
-#' @param value
-#' @param burnin
+#' @param values the output of `perla` function
+#' @param burnin a vector of indexes denoting the MCMC draws to be discarded (default `NULL` means every draw is kept)
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #'
-recover.loglikelihood <- function(value, burnin = NULL){
-  if(is.null(burnin)) to.keep <- 1:dim(value$Z)[3] else
-    to.keep <- setdiff(1:dim(value$Z)[3], burnin)
-  y <- value$y
-  Z <- value$Z[,,to.keep]  # n x K x R
-  Mu <- value$Mu[,,to.keep]    # K x d x R
-  if(is.matrix(value$Sigma)) Sigma <- value$Sigma else Sigma <- Sigma[,,to.keep]
-  value <- 0
+recover.loglikelihood <- function(values, burnin = NULL){
+  if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else
+    to.keep <- setdiff(1:dim(values$Z)[3], burnin)
+  y <- values$y
+  Z <- values$Z[,,to.keep]  # n x K x R
+  Mu <- values$Mu[,,to.keep]    # K x d x R
+  if(is.matrix(values$Sigma)) Sigma <- values$Sigma else Sigma <- Sigma[,,to.keep]
   n <- nrow(y)
   d <- ncol(y)
-  values <- numeric(dim(Z)[3])
+  val <- numeric(dim(Z)[3])
   pb <- progress_bar$new(total = dim(Z)[3])
   for(r in 1:dim(Z)[3]){
     pb$tick()
     if(is.matrix(Sigma)) S <- Sigma else S <- Sigma[,,r]
     eta <- Z[,,r] %*% Mu[,,r]
-    values[r] <- -.5*sum(diag((y - eta) %*% solve(S) %*% t(y - eta)))-
+    val[r] <- -.5*sum(diag((y - eta) %*% solve(S) %*% t(y - eta)))-
       n*d/2*log(2*pi)-n/2*determinant(S, logarithm = T)$mod
   }
-  values
+  val
 }
 
 
@@ -37,7 +36,7 @@ recover.loglikelihood <- function(value, burnin = NULL){
 model.loglikelihood <- function(y, Z,  # n x K
                                 Mu,    # K x d
                                 Sigma){
-  value <- 0
+  values <- 0
   n <- nrow(y)
   d <- ncol(y)
   eta <- Z %*% Mu

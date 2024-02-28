@@ -1,9 +1,9 @@
 #' Z from matrix to vector
 #' This function convert the selection matrix `Z` used in the model into a vector of length `n` stating to which each observation belong.
 #'
-#' @param Z
+#' @param Z an `n` x `K` matrix, or an array of dimension `n` x `K` x `R` (which is the output of the function `perla`).
 #'
-#' @return
+#' @return A vector of dimension `n` or a matrix of dimension `n` x `R` containing the clustering labels.
 #' @export
 #'
 #' @examples
