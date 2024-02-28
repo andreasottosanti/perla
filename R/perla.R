@@ -18,6 +18,8 @@
 #' @param p.spike
 #' @param mu0
 #' @param Sigma0
+#' @param W
+#' @param initialization the output of a `perla` function that is used as a starting point of the algorithm
 #'
 #' @return
 #' @export
@@ -29,7 +31,8 @@ perla <- function(x, W = NULL, K, R = 10^4,
                   p.spike = .5,
                   rho.value = 0.99,
                   mu0 = NULL,
-                  Sigma0 = NULL){
+                  Sigma0 = NULL,
+                  initialization = NULL){
   if("SpatialPolygonsDataFrame" %in% class(x)){
     if(is.null(W)) W <- poly2adjmat(map)
     x <- x@data
@@ -44,7 +47,7 @@ perla <- function(x, W = NULL, K, R = 10^4,
   Rho <- matrix(0, R, K-1)
   Psi <- Omega <- array(0, dim = c(n, K-1, R))
   Mu <- array(0, dim = c(K, d, R))
-
+  Z <- array(0, dim = c(n, K, R))
 
 # Default hyperparameters -------------------------------------------------
   if(is.null(mu0)) mu0 <- rep(0, d)
@@ -53,14 +56,21 @@ perla <- function(x, W = NULL, K, R = 10^4,
       Sigma0 <- 10}
 
 # Inizialization ----------------------------------------------------------
-  Z <- array(0, dim = c(n, K, R))
-  for(i in 1:n){
-    v <- sample(1:K, 1)
-    Z[i,v,1] <- 1
+  if(is.null(initialization)){
+    for(i in 1:n){
+      v <- sample(1:K, 1)
+      Z[i,v,1] <- 1
+    }
+    Rho[1,] <- rho.value
+  } else {
+    max.iter.inizialization <- dim(initialization$Z)[3]
+    Z[,,1] <- initialization$Z[,,max.iter.inizialization]
+    Rho[1,] <- initialization$Rho[max.iter.inizialization,]
+    Mu[,,1] <- initialization$Mu[,,max.iter.inizialization]
   }
-  Rho[1,] <- rho.value
   Psi[,,1] <- matrix(rnorm(n*(K-1)), n, K-1)
   Omega[,,1] <- rgamma(n*(K-1), 1, 1)
+
   detOmega <- determinant((diag(rowSums(W)) - rho.value * W)/tau, logarithm = T)$mod
   acceptance.rho <- numeric(K-1)
 
