@@ -76,7 +76,7 @@ perla <- function(x, W = NULL, K, R = 10^4,
 
   pb <- progress::progress_bar$new(total = R) # progress bar
   for(r in 2:R){
-    progress::pb$tick()
+    pb$tick()
 
     # ---overwrite
     Mu[,,r] <- Mu[,,r-1]
