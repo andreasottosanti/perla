@@ -92,7 +92,8 @@ perla <- function(y, W = NULL, K, R = 10^4,
   detOmega <- determinant((diag(rowSums(W)) - rho.value * W)/tau, logarithm = T)$mod
   acceptance.rho <- numeric(K-1)
 
-  pb <- progress::progress_bar$new(total = R) # progress bar
+
+  pb <- progress_bar$new(total = R) # progress bar
 
   for(r in 2:R){
     pb$tick()
