@@ -14,11 +14,11 @@ posterior_predictive_sampling <- function(values, burnin = NULL){
     to.keep <- setdiff(1:dim(values$Z)[3], burnin)
   Z <- values$Z[,,to.keep]
   Mu <- values$Mu[,,to.keep]
-  if(is.matrix(values$Sigma)) Sigma <- values$Sigma else Sigma <- Sigma[,,to.keep]
+  Sigma <- values$Sigma[,,to.keep]
   Y.pred <- array(0, dim = c(dim(Z)[1], dim(Mu)[2], dim(Z)[3]))
   for(r in 1:dim(Z)[3]){
     mu.star <- Z[,,r] %*% Mu[,,r]
-    if(is.matrix(Sigma)) L.star <- chol(Sigma) else L.star <- chol(Sigma[,,r])
+    L.star <- chol(Sigma[,,r])
     Y.pred[,,r] <- matrix(rnorm(dim(Z)[1]*dim(Mu)[2]), dim(Z)[1], dim(Mu)[2]) %*% L.star + mu.star
   }
   Y.pred

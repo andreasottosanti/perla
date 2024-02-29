@@ -7,7 +7,7 @@
 recover.loglikelihood(values, burnin = NULL)
 }
 \arguments{
-\item{values}{the output of \code{perla} function}
+\item{values}{an object of class \code{perla}}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
 }

@@ -5,7 +5,7 @@
 \title{PEnalized Regression with Local Aggregation (PERLA)}
 \usage{
 perla(
-  x,
+  y,
   W = NULL,
   K,
   R = 10^4,
@@ -14,11 +14,12 @@ perla(
   rho.value = 0.99,
   mu0 = NULL,
   Sigma0 = NULL,
+  burnin = NULL,
   initialization = NULL
 )
 }
 \arguments{
-\item{x}{can be either a \code{SpatialPolygonsDataFrame} object or an \code{n} x \code{d} matrix, where \code{n} is the number of spatial areas and \code{d} is the number of diseases.}
+\item{y}{the input dataset. It can be either of class \code{matrix} or \code{SpatialPolygonsDataFrame}}
 
 \item{K}{the number of clusters}
 
@@ -30,7 +31,9 @@ If \code{cont}, it assumes that rho is generated from a mixture of a \code{dbeta
 
 \item{rho.value}{default \code{0.99}}
 
-\item{initialization}{the output of a \code{perla} function that is used as a starting point of the algorithm}
+\item{burnin}{a vector of indexes denoting the MCMC draws to be discarded. If \code{NULL}, then only the starting values are discarded and the algorithm will perform \code{R+1} iterations.}
+
+\item{initialization}{it can be either an object of class \code{perla} or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma}, \code{Rho})}
 }
 \description{
 This function estimates the PERLA model using the Markov Chain Monte Carlo algorithm.
