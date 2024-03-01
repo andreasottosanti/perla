@@ -4,6 +4,8 @@ by A. Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
 
 R Package under development
 
-`library(devtools)`
+```{r}
+devtools::install_github("andreasottosanti/perla")
+```
 
-`install_github("andreasottosanti/perla")`
+
