@@ -14,5 +14,6 @@ Imports:
     pgdraw,
     progress,
     sp,
-    surveillance
+    surveillance,
+    label.switching
 
