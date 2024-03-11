@@ -16,10 +16,10 @@
 #' If `disc`, it assumes that rho can be equal to `0` (with probability `p.spike`) or `rho.value`.
 #' If `cont`, it assumes that rho is generated from a mixture of a `dbeta(x,2,18)` (with probability `p.spike`) or a `dbeta(x,18,2)`.
 #' @param rho.value default `0.99`
-#' @param p.spike
-#' @param mu0
-#' @param Sigma0
-#' @param W
+#' @param p.spike ...
+#' @param mu0 ...
+#' @param Sigma0 ...
+#' @param W ...
 #' @param initialization it can be either an object of class `perla` or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`)
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded. If `NULL`, then only the starting values are discarded and the algorithm will perform `R+1` iterations.
 #'
@@ -45,6 +45,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   tau <- 1
   if(p.spike < 0 | p.spike > 1) stop("p.spike is not a probability")
 
+
 # Preparation of the objects used to stock the draws ----------------------
 
   if(is.null(burnin)){
@@ -58,13 +59,17 @@ perla <- function(y, W = NULL, K, R = 10^4,
   Z <- Prob <- array(0, dim = c(n, K, R.kept))
   Sigma <- array(0, dim = c(d, d, R.kept))
 
+
 # Default hyperparameters -------------------------------------------------
+
   if(is.null(mu0)) mu0 <- rep(0, d)
   if(is.null(Sigma0)){
     if(d > 1) Sigma0 <- diag(rep(10, d)) else
       Sigma0 <- 10}
 
+
 # Inizialization ----------------------------------------------------------
+
   if(!is.null(initialization) & class(initialization) == "perla"){
     max.iter.inizialization <- dim(initialization$Z)[3]
     Z.current <- initialization$Z[,,max.iter.inizialization]
