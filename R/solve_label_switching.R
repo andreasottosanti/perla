@@ -6,6 +6,7 @@
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded (default `NULL` means every draw is kept)
 #' @param loglikelihood.values the output of the function `loglikelihood.values`. If `NULL` and the methods `PRA` and/or `ECR` are evoced to solve the label switching phenomenon, then the function will automatically compute the loglikelihood values.
 #' @param methods default `("PRA","ECR")`
+#' @param zpivot if furnished, it performs the relabelling using this vector as reference, otherwise the function will consider the partition corresponding to the largest log-likelihood value
 #'
 #' @return a list of two elements.
 #' - `results` contains the permuted clustering centroids and clustering probabilities for each method used to resolve the label switching;
@@ -16,7 +17,7 @@
 
 remove.label.switching <- function(values,
                                   methods = c("PRA","ECR"),
-                                  loglikelihood.values = NULL, burnin = NULL){
+                                  loglikelihood.values = NULL, burnin = NULL, zpivot = NULL){
   if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else
     to.keep <- setdiff(1:dim(values$Z)[3], burnin)
   if(is.null(loglikelihood.values)){
@@ -36,9 +37,10 @@ remove.label.switching <- function(values,
 
 
 # relabelling -------------------------------------------------------------
+  if(is.null(zpivot)) zpivot <- Zvec[mapindex,]
   relabelling <- label.switching(method = methods,
                                  mcmc = M, prapivot = M[mapindex,,],
-                                 z = Zvec, zpivot = Zvec[mapindex,], p = P, K = dim(Mu)[1])
+                                 z = Zvec, zpivot = zpivot, p = P, K = dim(Mu)[1])
 
   results <- list()
   for(m in 1:length(methods)){

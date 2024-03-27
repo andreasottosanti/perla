@@ -20,11 +20,11 @@ recover.loglikelihood <- function(values, burnin = NULL){
   Sigma <- values$Sigma[,,to.keep] # d x d x R
   n <- nrow(y)
   d <- ncol(y)
-  val <- numeric(dim(Z)[3])
-  pb <- progress_bar$new(total = dim(Z)[3])
-  for(r in 1:dim(Z)[3]){
+  val <- numeric(dim(values$Z)[3])
+  pb <- progress_bar$new(total = dim(values$Z)[3])
+  for(r in 1:dim(values$Z)[3]){
     pb$tick()
-    eta <- Z[,,r] %*% Mu[,,r]
+    eta <- values$Z[,,r] %*% Mu[,,r]
     val[r] <- -.5*sum(diag((y - eta) %*% solve(Sigma[,,r]) %*% t(y - eta)))-
       n*d/2*log(2*pi)-n/2*determinant(Sigma[,,r], logarithm = T)$mod
   }

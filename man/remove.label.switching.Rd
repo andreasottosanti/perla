@@ -8,7 +8,8 @@ remove.label.switching(
   values,
   methods = c("PRA", "ECR"),
   loglikelihood.values = NULL,
-  burnin = NULL
+  burnin = NULL,
+  zpivot = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ remove.label.switching(
 \item{loglikelihood.values}{the output of the function \code{loglikelihood.values}. If \code{NULL} and the methods \code{PRA} and/or \code{ECR} are evoced to solve the label switching phenomenon, then the function will automatically compute the loglikelihood values.}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
+
+\item{zpivot}{if furnished, it performs the relabelling using this vector as reference, otherwise the function will consider the partition corresponding to the largest log-likelihood value}
 }
 \value{
 a list of two elements.

@@ -12,6 +12,7 @@ perla(
   prior.rho = "const",
   p.spike = 0.5,
   rho.value = 0.99,
+  prior.mu = "shrink",
   mu0 = NULL,
   Sigma0 = NULL,
   burnin = NULL,
@@ -30,6 +31,8 @@ If \code{disc}, it assumes that rho can be equal to \code{0} (with probability \
 If \code{cont}, it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)} (with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
 
 \item{rho.value}{default \code{0.99}}
+
+\item{prior.mu}{if \code{shrink}, it considers the global-local shrinkage prior; if \code{standard}, it considers a multivariate gaussian prior with mean \code{mu0} and covariance \code{Sigma0}}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded. If \code{NULL}, then only the starting values are discarded and the algorithm will perform \code{R+1} iterations.}
 

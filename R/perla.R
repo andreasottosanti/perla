@@ -22,6 +22,9 @@
 #' @param W
 #' @param initialization it can be either an object of class `perla` or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`)
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded. If `NULL`, then only the starting values are discarded and the algorithm will perform `R+1` iterations.
+#' @param include.Sigma if `T`, the `Sigma` matrix becomes part of the prior variance of the cluster centroids.
+#' @param mean.penalty If `c()`, only the global shrinkage is considered. If `mean.penalty` contains `"c"`, then cluster penalties are added. If `mean.penalty` contains `"d"`, then disease penalties are added. If `mean.penalty` contains `"cd"`, then both cluster and disease penalties are added.
+#' If `NULL`, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussians, zero-centered and with covariance matrix `Sigma0`
 #'
 #' @return
 #' @export
@@ -32,6 +35,8 @@ perla <- function(y, W = NULL, K, R = 10^4,
                   prior.rho = "const",
                   p.spike = .5,
                   rho.value = 0.99,
+                  mean.penalty = c(),
+                  include.Sigma = T,
                   mu0 = NULL,
                   Sigma0 = NULL,
                   burnin = NULL,
@@ -45,7 +50,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   tau <- 1
   if(p.spike < 0 | p.spike > 1) stop("p.spike is not a probability")
 
-# Preparation of the objects used to stock the draws ----------------------
+# Preparation of the objects used to stock the posterior values ----------------------
 
   if(is.null(burnin)){
     burnin <- 1
@@ -57,6 +62,22 @@ perla <- function(y, W = NULL, K, R = 10^4,
   Mu <- array(0, dim = c(K, d, R.kept))
   Z <- Prob <- array(0, dim = c(n, K, R.kept))
   Sigma <- array(0, dim = c(d, d, R.kept))
+  Phi <- Zeta.d <- Zeta.c <- Zeta.cd <- NULL
+  if(!is.null(mean.penalty)){
+    cat("Applying global penalization;\n")
+    Phi <- numeric(R.kept)}
+  if("d" %in% mean.penalty){
+    cat("Applying feature penalization;\n")
+    Zeta.d <- matrix(0, R.kept, d)}
+  if("c" %in% mean.penalty){
+    cat("Applying cluster penalization;\n")
+    Zeta.c <- matrix(0, R.kept, K)}
+  if("cd" %in% mean.penalty){
+    cat("Applying feature-cluster penalization;\n")
+    Zeta.cd <- matrix(0, R.kept, K*d)}
+  #cat("              Penalizations\n")
+  #cat("----------------------------------------------------")
+  #cat("Global   |   Features   |   Clusters   | Features-clusters")
 
 # Default hyperparameters -------------------------------------------------
   if(is.null(mu0)) mu0 <- rep(0, d)
@@ -88,6 +109,12 @@ perla <- function(y, W = NULL, K, R = 10^4,
   }
   Psi.current <- matrix(rnorm(n*(K-1)), n, K-1)
   Omega.current <- matrix(rgamma(n*(K-1), 1, 1), n, K-1)
+  phi.current <- abs(rcauchy(1))
+  zeta.d.current <- zeta.c.current <- zeta.cd.current <- NULL
+  if("d" %in% mean.penalty) zeta.d.current <- abs(rcauchy(d))
+  if("c" %in% mean.penalty) zeta.c.current <- abs(rcauchy(K))
+  if("cd" %in% mean.penalty) zeta.cd.current <- abs(rcauchy(K*d))
+
 
   detOmega <- determinant((diag(rowSums(W)) - rho.value * W)/tau, logarithm = T)$mod
   acceptance.rho <- numeric(K-1)
@@ -95,11 +122,31 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
   pb <- progress_bar$new(total = R) # progress bar
 
+
+# Cycle -------------------------------------------------------------------
+
   for(r in 2:R){
     pb$tick()
 
     # --update mu
-    Mu.current <- update_means(y = y, Z = Z.current, Sigma = Sigma.current, mu0 = mu0, Sigma0 = Sigma0)
+    if(is.null(mean.penalty))
+      Mu.current <- update_means(y = y, Z = Z.current, Sigma = Sigma.current, mu0 = mu0, Sigma0 = Sigma0) else {
+        results.mu <- update_means_shrink(y = y,
+                                          mean.penalty = mean.penalty,
+                                          Mu = Mu.current,
+                                          Z = Z.current,
+                                          Sigma = Sigma.current,
+                                          zeta.d = zeta.d.current,
+                                          zeta.c = zeta.c.current,
+                                          zeta.cd = zeta.cd.current,
+                                          phi = phi.current)
+        Mu.current <- results.mu$mu
+        phi.current <- results.mu$phi
+        zeta.d.current <- results.mu$zeta.d
+        zeta.c.current <- results.mu$zeta.c
+        zeta.cd.current <- results.mu$zeta.cd
+      }
+
 
     # --update Z
     Z.current <- update_Z(y = y, mu = Mu.current, Sigma = Sigma.current, Psi = Psi.current)
@@ -137,6 +184,10 @@ perla <- function(y, W = NULL, K, R = 10^4,
       Rho.current <- rho.updated$rho
     }
 
+    # --update Sigma
+    resid <- y - Z.current %*% Mu.current
+    Sigma.current <- rinvwishart(nu = d + n, S = diag(d) + t(resid) %*% resid)
+
     # ---store the values
     if(r %in% tokeep){
       Mu[,,r-max(burnin)] <- Mu.current
@@ -144,10 +195,21 @@ perla <- function(y, W = NULL, K, R = 10^4,
       Prob[,,r-max(burnin)] <- Prob.current
       Rho[r-max(burnin),] <- Rho.current
       Sigma[,,r-max(burnin)] <- Sigma.current
+      if(!is.null(mean.penalty)) Phi[r-max(burnin)] <- phi.current
+      if("d" %in% mean.penalty) Zeta.d[r-max(burnin),] <- zeta.d.current
+      if("c" %in% mean.penalty) Zeta.c[r-max(burnin),] <- zeta.c.current
+      if("cd" %in% mean.penalty) Zeta.cd[r-max(burnin),] <- zeta.cd.current
     }
   }
 
-  results <- list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Rho = Rho, acceptance.rho = acceptance.rho, y = y)
+  shrinkage.parameters <- list()
+  if(!is.null(mean.penalty)) shrinkage.parameters$Phi <- Phi
+  if("d" %in% mean.penalty) shrinkage.parameters$Zeta.d <- Zeta.d
+  if("c" %in% mean.penalty) shrinkage.parameters$Zeta.c <- Zeta.c
+  if("cd" %in% mean.penalty) shrinkage.parameters$Zeta.cd <- Zeta.cd
+  results <- list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Rho = Rho,
+                  shrinkage.parameters = shrinkage.parameters,
+                  acceptance.rho = acceptance.rho, y = y)
   class(results) <- "perla"
   return(results)
 
