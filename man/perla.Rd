@@ -12,7 +12,8 @@ perla(
   prior.rho = "const",
   p.spike = 0.5,
   rho.value = 0.99,
-  prior.mu = "shrink",
+  mean.penalty = c(),
+  include.Sigma = T,
   mu0 = NULL,
   Sigma0 = NULL,
   burnin = NULL,
@@ -32,7 +33,10 @@ If \code{cont}, it assumes that rho is generated from a mixture of a \code{dbeta
 
 \item{rho.value}{default \code{0.99}}
 
-\item{prior.mu}{if \code{shrink}, it considers the global-local shrinkage prior; if \code{standard}, it considers a multivariate gaussian prior with mean \code{mu0} and covariance \code{Sigma0}}
+\item{mean.penalty}{If \code{c()}, only the global shrinkage is considered. If \code{mean.penalty} contains \code{"c"}, then cluster penalties are added. If \code{mean.penalty} contains \code{"d"}, then disease penalties are added. If \code{mean.penalty} contains \code{"cd"}, then both cluster and disease penalties are added.
+If \code{NULL}, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix \code{Sigma0}}
+
+\item{include.Sigma}{if \code{T}, the \code{Sigma} matrix becomes part of the prior variance of the cluster centroids.}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded. If \code{NULL}, then only the starting values are discarded and the algorithm will perform \code{R+1} iterations.}
 

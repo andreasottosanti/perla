@@ -33,15 +33,14 @@ recover.loglikelihood <- function(values, burnin = NULL){
 
 
 
-model.loglikelihood <- function(y,
-                                Z,  # n x K
-                                Mu,    # K x d
-                                Sigma  # d x d
-                                ){
-  values <- 0
+model.loglikelihood <- function(values, burnin = NULL){
+  if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else
+    to.keep <- setdiff(1:dim(values$Z)[3], burnin)
+  y <- values$y
+  z <- values$Z[,,to.keep]  # n x K x R
+  Mu <- values$Mu[,,to.keep]    # K x d x R
+  Sigma <- values$Sigma[,,to.keep] # d x d x R
   n <- nrow(y)
   d <- ncol(y)
-  eta <- Z %*% Mu
-  -.5*sum(diag((y - eta) %*% solve(Sigma) %*% t(y - eta)))-
-    n*d/2*log(2*pi)-n/2*determinant(Sigma, logarithm = T)$mod
+  val <- numeric(dim(values$Z)[3])
 }

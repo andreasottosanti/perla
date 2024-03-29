@@ -24,7 +24,7 @@
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded. If `NULL`, then only the starting values are discarded and the algorithm will perform `R+1` iterations.
 #' @param include.Sigma if `T`, the `Sigma` matrix becomes part of the prior variance of the cluster centroids.
 #' @param mean.penalty If `c()`, only the global shrinkage is considered. If `mean.penalty` contains `"c"`, then cluster penalties are added. If `mean.penalty` contains `"d"`, then disease penalties are added. If `mean.penalty` contains `"cd"`, then both cluster and disease penalties are added.
-#' If `NULL`, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussians, zero-centered and with covariance matrix `Sigma0`
+#' If `NULL`, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix `Sigma0`
 #'
 #' @return
 #' @export
