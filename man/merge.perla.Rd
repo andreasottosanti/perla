@@ -10,7 +10,7 @@ merge.perla(values)
 \item{values}{a list of \code{perla} objects. They must be different parallel runs of the same model.}
 }
 \value{
-an object of class perla, containing also the object \code{chains}, which states from which chain the elements come from.
+An object of class perla. It contains an object called \code{chains}, which states from which chain the elements come from.
 }
 \description{
 This function is designed to combine multiple Markov chains obtained running Perla from different starting points.

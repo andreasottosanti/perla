@@ -4,7 +4,7 @@
 #' @import abind
 #' @param values a list of `perla` objects. They must be different parallel runs of the same model.
 #'
-#' @return an object of class perla, containing also the object `chains`, which states from which chain the elements come from.
+#' @return An object of class perla. It contains an object called `chains`, which states from which chain the elements come from.
 #' @export
 #'
 #' @examples

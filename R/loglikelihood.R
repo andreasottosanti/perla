@@ -39,7 +39,9 @@ model.loglikelihood <- function(values, burnin = NULL){
   y <- values$y
   z <- values$Z[,,to.keep]  # n x K x R
   Mu <- values$Mu[,,to.keep]    # K x d x R
+  Prob <- values$Prob[,,to.keep]  # n x K x R
   Sigma <- values$Sigma[,,to.keep] # d x d x R
+  Cluster.means <- z[,,r] %*% Mu[,,r]
   n <- nrow(y)
   d <- ncol(y)
   val <- numeric(dim(values$Z)[3])
