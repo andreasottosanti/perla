@@ -2,6 +2,7 @@
 
 export(convert.Z.matrix_to_vector)
 export(convert.Z.vector_to_matrix)
+export(generate.simulations)
 export(information.criteria)
 export(merge.perla)
 export(perla)
@@ -17,4 +18,5 @@ import(label.switching)
 import(pgdraw)
 import(progress)
 import(sp)
+import(spdep)
 import(surveillance)

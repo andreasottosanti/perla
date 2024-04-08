@@ -152,7 +152,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
     Z.current <- update_Z(y = y, mu = Mu.current, Sigma = Sigma.current, Psi = Psi.current)
 
     # --update omega and psi
-    updated.psi.omega <- update.psi.omega(psi = Psi.current, omega = Omega.current, Z = Z.current, D = D, W = W, tau = tau, rho = Rho.current, apply.mean.correction = F)
+    updated.psi.omega <- update.psi.omega(psi = Psi.current, omega = Omega.current, Z = Z.current, D = diag(rowSums(W)), W = W, tau = tau, rho = Rho.current, apply.mean.correction = F)
     Psi.current <- updated.psi.omega$psi
     Omega.current <- updated.psi.omega$omega
     if(r %in% tokeep) Prob.current <- convert.to.probabilities(Psi.current)

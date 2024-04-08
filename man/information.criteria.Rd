@@ -2,7 +2,7 @@
 % Please edit documentation in R/information_criteria.R
 \name{information.criteria}
 \alias{information.criteria}
-\title{Title}
+\title{Information criteria of perla}
 \usage{
 information.criteria(values, loglikelihood.values = NULL)
 }
@@ -12,5 +12,5 @@ information.criteria(values, loglikelihood.values = NULL)
 \item{loglikelihood.values}{}
 }
 \description{
-Title
+This function computes the DIC3 value of a perla model.
 }
