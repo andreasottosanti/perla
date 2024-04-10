@@ -202,6 +202,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
     }
   }
 
+  cat("\n")
   shrinkage.parameters <- list()
   if(!is.null(mean.penalty)) shrinkage.parameters$Phi <- Phi
   if("d" %in% mean.penalty) shrinkage.parameters$Zeta.d <- Zeta.d
