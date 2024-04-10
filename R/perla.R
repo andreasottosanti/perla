@@ -1,4 +1,4 @@
-#' PEnalized Regression with Local Aggregation (PERLA)
+#' PEnalized Regression with Localities Aggregation (PERLA)
 #'
 #' This function estimates the PERLA model using the Markov Chain Monte Carlo algorithm.
 #'

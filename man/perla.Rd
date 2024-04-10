@@ -2,7 +2,7 @@
 % Please edit documentation in R/perla.R
 \name{perla}
 \alias{perla}
-\title{PEnalized Regression with Local Aggregation (PERLA)}
+\title{PEnalized Regression with Localities Aggregation (PERLA)}
 \usage{
 perla(
   y,
