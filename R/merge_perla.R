@@ -21,10 +21,10 @@ merge.perla <- function(values){
     results$Sigma <- abind(results$Sigma, values[[i]]$Sigma)
     results$Prob <- abind(results$Prob, values[[i]]$Prob)
     results$Rho <- rbind(results$Rho)
-    if("Phi" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Phi <- values[[i]]$Phi
-    if("Zeta.d" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.d <- values[[i]]$Zeta.d
-    if("Zeta.c" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.c <- values[[i]]$Zeta.c
-    if("Zeta.cd" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.cd <- values[[i]]$Zeta.cd
+    if("Phi" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Phi <- values[[i]]$shrinkage.parameters$Phi
+    if("Zeta.d" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.d <- values[[i]]$shrinkage.parameters$Zeta.d
+    if("Zeta.c" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.c <- values[[i]]$shrinkage.parameters$Zeta.c
+    if("Zeta.cd" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.cd <- values[[i]]$shrinkage.parameters$Zeta.cd
     results$acceptance.rho <- rbind(results$acceptance.rho, values[[i]]$acceptance.rho)
     chains <- c(chains, rep(i, dim(values[[i]]$Mu)[3]))
   }
