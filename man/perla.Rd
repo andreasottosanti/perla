@@ -13,7 +13,6 @@ perla(
   p.spike = 0.5,
   rho.value = 0.99,
   mean.penalty = c(),
-  include.Sigma = T,
   mu0 = NULL,
   Sigma0 = NULL,
   burnin = NULL,
@@ -21,27 +20,44 @@ perla(
 )
 }
 \arguments{
-\item{y}{the input dataset. It can be either of class \code{matrix} or \code{SpatialPolygonsDataFrame}}
+\item{y}{Input dataset. It can be either of class \code{matrix} or
+\code{SpatialPolygonsDataFrame}.}
 
-\item{K}{the number of clusters}
+\item{W}{Adjacency matrix. If not specified, is set to the adjacency matrix
+extracted from the \code{SpatialPolygonsDataFrame} data object.}
 
-\item{R}{the number of MCMC iterations (default \code{10^4})}
+\item{K}{Number of clusters.}
 
-\item{prior.rho}{set the type of prior on the rho parameter of the CAR. If \code{const}, it assumes a fixed value, that is \code{rho.value}.
-If \code{disc}, it assumes that rho can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}.
-If \code{cont}, it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)} (with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
+\item{R}{Number of MCMC iterations (default \code{10^4}).}
 
-\item{rho.value}{default \code{0.99}}
+\item{prior.rho}{Type of prior on the rho parameter of the CAR. If \code{const},
+it assumes a fixed value, that is \code{rho.value}. If \code{disc}, it assumes that rho
+can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}. If \code{cont},
+it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)}
+(with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
+
+\item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 
 \item{mean.penalty}{If \code{c()}, only the global shrinkage is considered. If \code{mean.penalty} contains \code{"c"}, then cluster penalties are added. If \code{mean.penalty} contains \code{"d"}, then disease penalties are added. If \code{mean.penalty} contains \code{"cd"}, then both cluster and disease penalties are added.
 If \code{NULL}, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix \code{Sigma0}}
-
-\item{include.Sigma}{if \code{T}, the \code{Sigma} matrix becomes part of the prior variance of the cluster centroids.}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded. If \code{NULL}, then only the starting values are discarded and the algorithm will perform \code{R+1} iterations.}
 
 \item{initialization}{it can be either an object of class \code{perla} or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma}, \code{Rho})}
 }
 \description{
-This function estimates the PERLA model using the Markov Chain Monte Carlo algorithm.
+This function estimates a PERLA model using the Markov Chain Monte Carlo
+algorithm. PERLA is a multivariate Bayesian model that clusters the areas in
+a territory according to the observed mortality rates of multiple causes of
+deaths, exploiting also the information of external covariates.
+}
+\details{
+PERLA incorporates the spatial structure of the data directly into the
+clustering probabilities by leveraging the stick-breaking formulation of the
+multinomial distribution. Additionally, it exploits suitable global-local
+shrinkage priors to ensure that the detection of clusters is driven by
+concrete differences across mortality levels, while excluding spurious
+differences. PERLA is estimated with an MCMC algorithm for posterior
+inference that consists of closed-form Gibbs sampling moves for nearly every
+model parameter, without requiring complex tuning operations.
 }

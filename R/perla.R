@@ -1,6 +1,20 @@
 #' PEnalized Regression with Localities Aggregation (PERLA)
 #'
-#' This function estimates the PERLA model using the Markov Chain Monte Carlo algorithm.
+#' @description
+#' This function estimates a PERLA model using the Markov Chain Monte Carlo
+#' algorithm. PERLA is a multivariate Bayesian model that clusters the areas in
+#' a territory according to the observed mortality rates of multiple causes of
+#' deaths, exploiting also the information of external covariates.
+#'
+#' @details
+#' PERLA incorporates the spatial structure of the data directly into the
+#' clustering probabilities by leveraging the stick-breaking formulation of the
+#' multinomial distribution. Additionally, it exploits suitable global-local
+#' shrinkage priors to ensure that the detection of clusters is driven by
+#' concrete differences across mortality levels, while excluding spurious
+#' differences. PERLA is estimated with an MCMC algorithm for posterior
+#' inference that consists of closed-form Gibbs sampling moves for nearly every
+#' model parameter, without requiring complex tuning operations.
 #'
 #' @import pgdraw
 #' @import LaplacesDemon
@@ -9,20 +23,23 @@
 #' @import progress
 #' @import label.switching
 #'
-#' @param y the input dataset. It can be either of class `matrix` or `SpatialPolygonsDataFrame`
-#' @param K the number of clusters
-#' @param R the number of MCMC iterations (default `10^4`)
-#' @param prior.rho set the type of prior on the rho parameter of the CAR. If `const`, it assumes a fixed value, that is `rho.value`.
-#' If `disc`, it assumes that rho can be equal to `0` (with probability `p.spike`) or `rho.value`.
-#' If `cont`, it assumes that rho is generated from a mixture of a `dbeta(x,2,18)` (with probability `p.spike`) or a `dbeta(x,18,2)`.
-#' @param rho.value default `0.99`
+#' @param y Input dataset. It can be either of class `matrix` or
+#' `SpatialPolygonsDataFrame`.
+#' @param W Adjacency matrix. If not specified, is set to the adjacency matrix
+#' extracted from the `SpatialPolygonsDataFrame` data object.
+#' @param K Number of clusters.
+#' @param R Number of MCMC iterations (default `10^4`).
+#' @param prior.rho Type of prior on the rho parameter of the CAR. If `const`,
+#' it assumes a fixed value, that is `rho.value`. If `disc`, it assumes that rho
+#' can be equal to `0` (with probability `p.spike`) or `rho.value`. If `cont`,
+#' it assumes that rho is generated from a mixture of a `dbeta(x,2,18)`
+#' (with probability `p.spike`) or a `dbeta(x,18,2)`.
+#' @param rho.value Fixed value for the `rho` prior (default `0.99`).
 #' @param p.spike
 #' @param mu0
 #' @param Sigma0
-#' @param W
 #' @param initialization it can be either an object of class `perla` or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`)
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded. If `NULL`, then only the starting values are discarded and the algorithm will perform `R+1` iterations.
-#' @param include.Sigma if `T`, the `Sigma` matrix becomes part of the prior variance of the cluster centroids.
 #' @param mean.penalty If `c()`, only the global shrinkage is considered. If `mean.penalty` contains `"c"`, then cluster penalties are added. If `mean.penalty` contains `"d"`, then disease penalties are added. If `mean.penalty` contains `"cd"`, then both cluster and disease penalties are added.
 #' If `NULL`, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix `Sigma0`
 #'
@@ -36,7 +53,6 @@ perla <- function(y, W = NULL, K, R = 10^4,
                   p.spike = .5,
                   rho.value = 0.99,
                   mean.penalty = c(),
-                  include.Sigma = T,
                   mu0 = NULL,
                   Sigma0 = NULL,
                   burnin = NULL,
@@ -50,7 +66,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   tau <- 1
   if(p.spike < 0 | p.spike > 1) stop("p.spike is not a probability")
 
-# Preparation of the objects used to stock the posterior values ----------------------
+# Preparation of the objects used to stock the posterior values ----------------
 
   if(is.null(burnin)){
     burnin <- 1
