@@ -30,11 +30,15 @@ extracted from the \code{SpatialPolygonsDataFrame} data object.}
 
 \item{R}{Number of MCMC iterations (default \code{10^4}).}
 
-\item{prior.rho}{Type of prior on the rho parameter of the CAR. If \code{const},
-it assumes a fixed value, that is \code{rho.value}. If \code{disc}, it assumes that rho
+\item{prior.rho}{Type of prior on the \code{rho} parameter of the CAR. If the
+parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}). If
+the parameter is set to \code{disc}, it is assumed equal to \code{rho}
 can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}. If \code{cont},
 it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)}
 (with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
+
+\item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
+indicates the probability of \code{rho} being \code{0}.}
 
 \item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 

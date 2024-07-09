@@ -29,13 +29,15 @@
 #' extracted from the `SpatialPolygonsDataFrame` data object.
 #' @param K Number of clusters.
 #' @param R Number of MCMC iterations (default `10^4`).
-#' @param prior.rho Type of prior on the rho parameter of the CAR. If `const`,
-#' it assumes a fixed value, that is `rho.value`. If `disc`, it assumes that rho
+#' @param prior.rho Type of prior on the `rho` parameter of the CAR. If the
+#' parameter is set to `const`, it is assumed as fixed value (`rho.value`). If
+#' the parameter is set to `disc`, it is assumed equal to `rho`
 #' can be equal to `0` (with probability `p.spike`) or `rho.value`. If `cont`,
 #' it assumes that rho is generated from a mixture of a `dbeta(x,2,18)`
 #' (with probability `p.spike`) or a `dbeta(x,18,2)`.
 #' @param rho.value Fixed value for the `rho` prior (default `0.99`).
-#' @param p.spike
+#' @param p.spike If the parameter `prior.rho`  is set to `disc`, `p.spike`
+#' indicates the probability of `rho` being `0`.
 #' @param mean.penalty If `c()`, only the global shrinkage is considered. If
 #' `mean.penalty` contains `"c"`, then cluster penalties are added. If
 #' `mean.penalty` contains `"d"`, then disease penalties are added. If
@@ -150,7 +152,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   if("cd" %in% mean.penalty) zeta.cd.current <- abs(rcauchy(K*d))
 
 
-  detOmega <- determinant((diag(rowSums(W)) - rho.value * W)/tau, logarithm = T)$mod
+  detOmega <- determinant((diag(rowSums(W))-rho.value*W)/tau, logarithm=T)$mod
   acceptance.rho <- numeric(K-1)
 
 
@@ -164,7 +166,8 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
     # --update mu
     if(is.null(mean.penalty))
-      Mu.current <- update_means(y = y, Z = Z.current, Sigma = Sigma.current, mu0 = mu0, Sigma0 = Sigma0) else {
+      Mu.current <- update_means(y = y, Z = Z.current, Sigma = Sigma.current,
+                                 mu0 = mu0, Sigma0 = Sigma0) else {
         results.mu <- update_means_shrink(y = y,
                                           mean.penalty = mean.penalty,
                                           Mu = Mu.current,
@@ -183,10 +186,19 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
 
     # --update Z
-    Z.current <- update_Z(y = y, mu = Mu.current, Sigma = Sigma.current, Psi = Psi.current)
+    Z.current <- update_Z(y = y,
+                          mu = Mu.current,
+                          Sigma = Sigma.current,
+                          Psi = Psi.current)
 
     # --update omega and psi
-    updated.psi.omega <- update.psi.omega(psi = Psi.current, omega = Omega.current, Z = Z.current, D = diag(rowSums(W)), W = W, tau = tau, rho = Rho.current, apply.mean.correction = F)
+    updated.psi.omega <- update.psi.omega(psi = Psi.current,
+                                          omega = Omega.current,
+                                          Z = Z.current,
+                                          D = diag(rowSums(W)),
+                                          W = W, tau = tau,
+                                          rho = Rho.current,
+                                          apply.mean.correction = F)
     Psi.current <- updated.psi.omega$psi
     Omega.current <- updated.psi.omega$omega
     if(r %in% tokeep) Prob.current <- convert.to.probabilities(Psi.current)
@@ -213,7 +225,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
                                            tau = tau,
                                            W = W,
                                            lambda_spike = p.spike,
-                                           lambda_slab = 1-p.spike, sigma.rho = 3)
+                                           lambda_slab = 1-p.spike, sigma.rho=3)
       acceptance.rho <- acceptance.rho + rho.updated$accepted
       Rho.current <- rho.updated$rho
     }
