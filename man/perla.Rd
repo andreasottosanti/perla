@@ -38,12 +38,28 @@ it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)}
 
 \item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 
-\item{mean.penalty}{If \code{c()}, only the global shrinkage is considered. If \code{mean.penalty} contains \code{"c"}, then cluster penalties are added. If \code{mean.penalty} contains \code{"d"}, then disease penalties are added. If \code{mean.penalty} contains \code{"cd"}, then both cluster and disease penalties are added.
-If \code{NULL}, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix \code{Sigma0}}
+\item{mean.penalty}{If \code{c()}, only the global shrinkage is considered. If
+\code{mean.penalty} contains \code{"c"}, then cluster penalties are added. If
+\code{mean.penalty} contains \code{"d"}, then disease penalties are added. If
+\code{mean.penalty} contains \code{"cd"}, then both cluster and disease penalties are
+added. If \code{NULL}, no penalization is considered and the prior of cluster mean
+vectors are d-variate Gaussian distributions, zero-centered and with
+covariance matrix \code{Sigma0}.}
 
-\item{burnin}{a vector of indexes denoting the MCMC draws to be discarded. If \code{NULL}, then only the starting values are discarded and the algorithm will perform \code{R+1} iterations.}
+\item{mu0}{Vector with values for \code{mu0} hyperparameter. If NULL (default) the
+vector components are set equal to 0.}
 
-\item{initialization}{it can be either an object of class \code{perla} or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma}, \code{Rho})}
+\item{Sigma0}{Matrix with values for \code{Sigma0} hyperparameter. If NULL
+(default) the matrix components are set equal to 10.}
+
+\item{burnin}{A vector of indexes denoting the MCMC draws to be discarded. If
+\code{NULL}, then only the starting values are discarded and the algorithm will
+perform \code{R+1} iterations.}
+
+\item{initialization}{It can be either an object of class \code{perla} or a list
+of starting points. In the last case, each list element must be named after
+a parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma},
+\code{Rho}.}
 }
 \description{
 This function estimates a PERLA model using the Markov Chain Monte Carlo

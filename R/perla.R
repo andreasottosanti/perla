@@ -36,12 +36,25 @@
 #' (with probability `p.spike`) or a `dbeta(x,18,2)`.
 #' @param rho.value Fixed value for the `rho` prior (default `0.99`).
 #' @param p.spike
-#' @param mu0
-#' @param Sigma0
-#' @param initialization it can be either an object of class `perla` or a list with starting point. In the last case, each list element must be named after the parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`)
-#' @param burnin a vector of indexes denoting the MCMC draws to be discarded. If `NULL`, then only the starting values are discarded and the algorithm will perform `R+1` iterations.
-#' @param mean.penalty If `c()`, only the global shrinkage is considered. If `mean.penalty` contains `"c"`, then cluster penalties are added. If `mean.penalty` contains `"d"`, then disease penalties are added. If `mean.penalty` contains `"cd"`, then both cluster and disease penalties are added.
-#' If `NULL`, no penalization is considered and the prior of cluster mean vectors are d-variate Gaussian distributions, zero-centered and with covariance matrix `Sigma0`
+#' @param mean.penalty If `c()`, only the global shrinkage is considered. If
+#' `mean.penalty` contains `"c"`, then cluster penalties are added. If
+#' `mean.penalty` contains `"d"`, then disease penalties are added. If
+#' `mean.penalty` contains `"cd"`, then both cluster and disease penalties are
+#' added. If `NULL`, no penalization is considered and the prior of cluster mean
+#' vectors are d-variate Gaussian distributions, zero-centered and with
+#' covariance matrix `Sigma0`.
+#' @param mu0 Vector with values for `mu0` hyperparameter. If NULL (default) the
+#' vector components are set equal to 0.
+#' @param Sigma0 Matrix with values for `Sigma0` hyperparameter. If NULL
+#' (default) the matrix components are set equal to 10.
+#' @param burnin A vector of indexes denoting the MCMC draws to be discarded. If
+#' `NULL`, then only the starting values are discarded and the algorithm will
+#' perform `R+1` iterations.
+#' @param initialization It can be either an object of class `perla` or a list
+#' of starting points. In the last case, each list element must be named after
+#' a parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`,
+#' `Rho`.
+#'
 #'
 #' @return
 #' @export
@@ -65,6 +78,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   d <- ncol(y)
   tau <- 1
   if(p.spike < 0 | p.spike > 1) stop("p.spike is not a probability")
+
 
 # Preparation of the objects used to stock the posterior values ----------------
 
@@ -95,7 +109,9 @@ perla <- function(y, W = NULL, K, R = 10^4,
   #cat("----------------------------------------------------")
   #cat("Global   |   Features   |   Clusters   | Features-clusters")
 
+
 # Default hyperparameters -------------------------------------------------
+
   if(is.null(mu0)) mu0 <- rep(0, d)
   if(is.null(Sigma0)){
     if(d > 1) Sigma0 <- diag(rep(10, d)) else
