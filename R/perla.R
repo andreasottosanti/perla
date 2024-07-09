@@ -55,11 +55,13 @@
 #' a parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`,
 #' `Rho`.
 #'
-#'
 #' @return
+#' An object of class `perla`.
+#'
 #' @export
 #'
 #' @examples
+#'
 
 perla <- function(y, W = NULL, K, R = 10^4,
                   prior.rho = "const",

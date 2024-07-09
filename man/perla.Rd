@@ -61,6 +61,9 @@ of starting points. In the last case, each list element must be named after
 a parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma},
 \code{Rho}.}
 }
+\value{
+An object of class \code{perla}.
+}
 \description{
 This function estimates a PERLA model using the Markov Chain Monte Carlo
 algorithm. PERLA is a multivariate Bayesian model that clusters the areas in
