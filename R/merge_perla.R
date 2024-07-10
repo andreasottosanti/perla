@@ -1,10 +1,17 @@
-#' Merge multiple perla objects into a unique chain
+#' Merge multiple `perla` objects into a unique chain
 #'
-#' This function is designed to combine multiple Markov chains obtained running Perla from different starting points.
+#' @description
+#' This function is designed to combine multiple Markov chains obtained running
+#' the function `perla` from different starting points.
+#'
 #' @import abind
-#' @param values a list of `perla` objects. They must be different parallel runs of the same model.
 #'
-#' @return An object of class perla. It contains an object called `chains`, which states from which chain the elements come from.
+#' @param values A list of `perla` objects. These objects must be different
+#' parallel runs of the same model.
+#'
+#' @return An object of class `perla`. It contains an object called `chains`,
+#' which states from which chain the elements come from.
+#'
 #' @export
 #'
 #' @examples
