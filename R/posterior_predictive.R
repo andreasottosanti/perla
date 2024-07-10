@@ -1,10 +1,15 @@
 #' Generate values from the posterior predictive distribution
-#' This function generate a new dataset with the same dimension of the analyzed one from the posterior predictive distribution
 #'
-#' @param values the output of `perla` function
-#' @param burnin a vector of indexes denoting the MCMC draws to be discarded (default `NULL` means every draw is kept)
+#' @description
+#' This function generate a new dataset (with the same dimension of the input
+#' data) sampling from the posterior predictive distribution.
+#'
+#' @param values An output of the `perla` function.
+#' @param burnin A vector of indexes denoting the MCMC draws to be discarded
+#' (default `NULL` means no draws are discarded).
 #'
 #' @return
+#'
 #' @export
 #'
 #' @examples
