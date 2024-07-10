@@ -13,6 +13,7 @@
 #' @export
 #'
 #' @examples
+#'
 
 posterior_predictive_sampling <- function(values, burnin = NULL){
   if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else

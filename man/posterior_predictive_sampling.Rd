@@ -2,17 +2,17 @@
 % Please edit documentation in R/posterior_predictive.R
 \name{posterior_predictive_sampling}
 \alias{posterior_predictive_sampling}
-\title{Generate values from the posterior predictive distribution
-This function generate a new dataset with the same dimension of the analyzed one from the posterior predictive distribution}
+\title{Generate values from the posterior predictive distribution}
 \usage{
 posterior_predictive_sampling(values, burnin = NULL)
 }
 \arguments{
-\item{values}{the output of \code{perla} function}
+\item{values}{An output of the \code{perla} function.}
 
-\item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
+\item{burnin}{A vector of indexes denoting the MCMC draws to be discarded
+(default \code{NULL} means no draws are discarded).}
 }
 \description{
-Generate values from the posterior predictive distribution
-This function generate a new dataset with the same dimension of the analyzed one from the posterior predictive distribution
+This function generate a new dataset (with the same dimension of the input
+data) sampling from the posterior predictive distribution.
 }
