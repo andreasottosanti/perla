@@ -1,14 +1,21 @@
-#' Information criteria of perla
+#' Information criteria of `perla`
 #'
-#' This function computes the DIC3 value of a perla model.
+#' @description
+#' This function computes the DIC3 value of a `perla` model.
 #'
-#' @param values an object of class `perla`
-#' @param loglikelihood.values
+#' @param values Output of function `perla`.
+#'
+#' @param loglikelihood.values The log-likelihood values at each iteration of the
+#' MCMC. If NULL (default) the log-likelihood values are recovered from the
+#' `perla` object.
 #'
 #' @return
+#' Returns the information criteria of the `perla` object.
+#'
 #' @export
 #'
 #' @examples
+#'
 
 information.criteria <- function(values, loglikelihood.values = NULL){
   if(is.null(loglikelihood.values))
