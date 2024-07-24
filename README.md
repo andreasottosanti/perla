@@ -1,8 +1,8 @@
-*PEnalized Regression and Local Aggregation* (PERLA)
+*PEnalized Regression with Localities Aggregation* (PERLA)
 
-by A. Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
+This R library implements the PERLA model proposed in **Bayesian mapping of mortality clusters** by Sottosanti, P. Belloni, E. Bovo and G. Boccuzzo
 
-R Package under development
+Install the library using the command
 
 ```{r}
 devtools::install_github("andreasottosanti/perla")
