@@ -14,4 +14,4 @@
 #'   \item{W}{Neighbour matrix for the data.}
 #' }
 #' @source {WONDER Online Databases (https://wonder.cdc.gov/mcd-icd10.html)}
-"west_states_USA"
+"west_states_USA.Rdata"
