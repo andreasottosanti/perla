@@ -6,7 +6,7 @@
 #'
 #'
 #' @format
-#' A `.Rdata` file. The file contains
+#' The file contains
 #' \describe{
 #'   \item{west.states}{A `SpatialPolygonDataFrame` object with the map and the
 #'   data of the mortality by U.S. counties from 2016 to 2019 for three causes
@@ -14,4 +14,4 @@
 #'   \item{W}{Neighbour matrix for the data.}
 #' }
 #' @source {WONDER Online Databases (https://wonder.cdc.gov/mcd-icd10.html)}
-"west_states_USA.Rdata"
+"west_states_USA"
