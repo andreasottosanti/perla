@@ -10,7 +10,7 @@
 #' \describe{
 #'   \item{west.states}{A `SpatialPolygonDataFrame` object with the map and the
 #'   data of the mortality by U.S. counties from 2016 to 2019 for three causes
-#'   of death (circulatory diseases, respiratory diseases and tumours).}
+#'   of death (circulatory diseases, respiratory diseases and tumors).}
 #'   \item{W}{Neighbour matrix for the data.}
 #' }
 #' @source {WONDER Online Database (https://wonder.cdc.gov/mcd-icd10.html)}
