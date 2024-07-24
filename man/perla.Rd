@@ -84,3 +84,7 @@ differences. PERLA is estimated with an MCMC algorithm for posterior
 inference that consists of closed-form Gibbs sampling moves for nearly every
 model parameter, without requiring complex tuning operations.
 }
+\examples{
+perla(y = west.USA, W = W, K = 3)
+
+}

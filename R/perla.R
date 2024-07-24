@@ -63,6 +63,7 @@
 #' @export
 #'
 #' @examples
+#' perla(y = west.USA, W = W, K = 3)
 #'
 
 perla <- function(y, W = NULL, K, R = 10^4,
