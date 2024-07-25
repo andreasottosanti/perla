@@ -52,7 +52,6 @@ Simulate maps using DAGAR.
 \examples{
 west.states <- data(west_states_data)
 
-
 sim1 <- generate.simulations(spatial.map = west.states,
 K = 3,
 d = 10,
