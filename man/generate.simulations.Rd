@@ -10,6 +10,7 @@ generate.simulations(
   d = NULL,
   Sigma = NULL,
   range.mu,
+  range.Sigma,
   rho,
   prob.null.centroid = 0.5,
   scale.factor.variance = 0.05,
@@ -29,6 +30,9 @@ to simulate from.}
 clusters.}
 
 \item{range.mu}{Range of the uniform distribution used in data generation.}
+
+\item{range.Sigma}{Range of the uniform distribution used to generate the
+correlation matrix Sigma.}
 
 \item{rho}{\code{rho} parameter of the DAGAR.}
 
@@ -57,24 +61,22 @@ K = 3,
 d = 10,
 Sigma = NULL,
 range.mu = 0.5,
+range.Sigma = 0.1,
 rho = c(0.8, 0.9),
 prob.null.centroid = 0.5,
 scale.factor.variance = 0.05,
 correct.mean.prob = F,
 plot.map = F)
 
-Corr.matrix <- matrix(c(0.07, -0.01175893, 0.00124239,
--0.01175893, 0.07, 0.00653324,
-0.00124239, 0.00653324, 0.07),
-byrow = T, ncol = 3, nrow = 3)
 
 sim2 <- generate.simulations(spatial.map = west.states,
-K = 3,
-d = NULL,
-Sigma = Corr.matrix,
-range.mu = 1, rho = c(0.01, 0.9),
+K = 4,
+d = 3,
+Sigma = NULL,
+range.mu = 1, rho = c(0.01, 0.455, 0.9),
+range.Sigma = 0.2,
 prob.null.centroid = 0.5,
-scale.factor.variance = 0.05,
+scale.factor.variance = 0.07,
 correct.mean.prob = F,
 plot.map = F)
 
