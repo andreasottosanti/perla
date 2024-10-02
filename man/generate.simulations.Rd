@@ -39,8 +39,8 @@ correlation matrix Sigma.}
 \item{prob.null.centroid}{Probability of the uniform distribution used in
 data generation.}
 
-\item{scale.factor.variance}{Scaling factor for variance-covariance matrix (
-default 0.05).}
+\item{scale.factor.variance}{Scaling factor for variance-covariance matrix
+(default 0.05).}
 
 \item{correct.mean.prob}{Use the stick-breaking formulation of the
 multinomial distribution while simulating (default \code{FALSE}).}
