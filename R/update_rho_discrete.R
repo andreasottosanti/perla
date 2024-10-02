@@ -1,18 +1,3 @@
-#' Discrete rho update
-#'
-#' @param psi the `n x (K-1)` matrix of the `psi` values
-#' @param tau
-#' @param W
-#' @param lambda.spike
-#' @param lambda.slab
-#' @param rho.value (default `0.99`) it contains the value of rho different from 0
-#' @param detOmega
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
 
 update_rho_discrete <- function(psi,
                              tau = 1, W, lambda.spike = 1, lambda.slab = 1, rho.value = .99, detOmega = NULL){

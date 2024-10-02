@@ -1,16 +1,3 @@
-#' Update the clustering labels
-#' This function updates the clustering labels of the `n` areas of the map
-#'
-#' @param y
-#' @param mu
-#' @param Sigma
-#' @param Psi
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
 update_Z <- function(y, mu, Sigma, Psi){
   if(is.vector(Psi)) Psi <- matrix(Psi, ncol = 1)
   n <- nrow(y)
