@@ -29,6 +29,7 @@
 #' extracted from the `SpatialPolygonsDataFrame` data object.
 #' @param K Number of clusters.
 #' @param R Number of MCMC iterations (default `10^4`).
+#' @param X a `data.frame` object containing the variables to use as covariates.
 #' @param prior.rho Type of prior on the `rho` parameter of the CAR. If the
 #' parameter is set to `const`, it is assumed as fixed value (`rho.value`). If
 #' the parameter is set to `disc`, it is assumed equal to `rho`
@@ -63,10 +64,12 @@
 #' @export
 #'
 #' @examples
-#' perla(y = west.USA, W = W, K = 3)
+#' \dontrun{
+#' perla(y = west_states_data, W = west_states_W, K = 3)}
 #'
 
 perla <- function(y, W = NULL, K, R = 10^4,
+                  X = NULL,
                   prior.rho = "const",
                   p.spike = .5,
                   rho.value = 0.99,
@@ -158,6 +161,15 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
 
   pb <- progress_bar$new(total = R) # progress bar
+
+
+# Covariates --------------------------------------------------------------
+
+  if(!is.null(X)){
+    if(class(X) != "data.frame") stop("X is not a 'data.frame' object")
+    clean_reg <- lm(y ~ ., data = X)
+    y <- residuals(clean_reg)
+  }
 
 
 # Cycle -------------------------------------------------------------------

@@ -9,6 +9,7 @@ perla(
   W = NULL,
   K,
   R = 10^4,
+  X = NULL,
   prior.rho = "const",
   p.spike = 0.5,
   rho.value = 0.99,
@@ -29,6 +30,8 @@ extracted from the \code{SpatialPolygonsDataFrame} data object.}
 \item{K}{Number of clusters.}
 
 \item{R}{Number of MCMC iterations (default \code{10^4}).}
+
+\item{X}{a \code{data.frame} object containing the variables to use as covariates.}
 
 \item{prior.rho}{Type of prior on the \code{rho} parameter of the CAR. If the
 parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}). If
@@ -85,6 +88,7 @@ inference that consists of closed-form Gibbs sampling moves for nearly every
 model parameter, without requiring complex tuning operations.
 }
 \examples{
-perla(y = west.USA, W = W, K = 3)
+\dontrun{
+perla(y = west_states_data, W = west_states_W, K = 3)}
 
 }

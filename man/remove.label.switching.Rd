@@ -2,7 +2,7 @@
 % Please edit documentation in R/solve_label_switching.R
 \name{remove.label.switching}
 \alias{remove.label.switching}
-\title{Solve label switching}
+\title{Label switching correction}
 \usage{
 remove.label.switching(
   values,
@@ -31,5 +31,5 @@ a list of two elements.
 }
 }
 \description{
-This function can be applied to remove the label switching effect.
+This function can be applied to remove the label switching effect from the posterior sample.
 }

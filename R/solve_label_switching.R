@@ -1,6 +1,6 @@
-#' Solve label switching
+#' Label switching correction
 #'
-#' This function can be applied to remove the label switching effect.
+#' This function can be applied to remove the label switching effect from the posterior sample.
 #'
 #' @param values an object of class `perla`
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded (default `NULL` means every draw is kept)
@@ -13,7 +13,6 @@
 #' - `relabelling` is the output of the `label.switching` function.
 #' @export
 #'
-#' @examples
 
 remove.label.switching <- function(values,
                                   methods = c("PRA","ECR"),

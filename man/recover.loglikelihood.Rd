@@ -2,7 +2,7 @@
 % Please edit documentation in R/loglikelihood.R
 \name{recover.loglikelihood}
 \alias{recover.loglikelihood}
-\title{A posteriori log-likelihood computation}
+\title{Log-likelihood computation}
 \usage{
 recover.loglikelihood(values, burnin = NULL, type = "j")
 }
@@ -11,7 +11,7 @@ recover.loglikelihood(values, burnin = NULL, type = "j")
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
 
-\item{type}{if \code{j}, it returns the joint \verb{(y,z)} log-likelihood values; if \code{m}, it returns the marginal log-likelihood values of \code{y}.}
+\item{type}{if \code{j} (default), it returns the joint \verb{(y,z)} log-likelihood values; if \code{m}, it returns the marginal log-likelihood values of \code{y}.}
 }
 \description{
 This function returns the log-likelihood value at each iteration of the MCMC.

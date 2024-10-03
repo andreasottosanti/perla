@@ -2,7 +2,7 @@
 % Please edit documentation in R/information_criteria.R
 \name{information.criteria}
 \alias{information.criteria}
-\title{Information criteria of \code{perla}}
+\title{\code{perla} information criteria}
 \usage{
 information.criteria(values, loglikelihood.values = NULL)
 }
@@ -10,11 +10,11 @@ information.criteria(values, loglikelihood.values = NULL)
 \item{values}{Output of function \code{perla}.}
 
 \item{loglikelihood.values}{The log-likelihood values at each iteration of the
-MCMC. If NULL (default) the log-likelihood values are recovered from the
-\code{perla} object.}
+MCMC. If NULL (default) the log-likelihood values are recovered directly from the
+\code{perla} object passed as input.}
 }
 \value{
-Returns the information criteria of the \code{perla} object.
+Returns the information criteria of the estimated \code{perla} model.
 }
 \description{
 This function computes the DIC3 value of a \code{perla} model.

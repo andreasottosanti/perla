@@ -1,10 +1,10 @@
-#' A posteriori log-likelihood computation
+#' Log-likelihood computation
 #'
 #' This function returns the log-likelihood value at each iteration of the MCMC.
 #'
 #' @param values an object of class `perla`
 #' @param burnin a vector of indexes denoting the MCMC draws to be discarded (default `NULL` means every draw is kept)
-#' @param type if `j`, it returns the joint `(y,z)` log-likelihood values; if `m`, it returns the marginal log-likelihood values of `y`.
+#' @param type if `j` (default), it returns the joint `(y,z)` log-likelihood values; if `m`, it returns the marginal log-likelihood values of `y`.
 #'
 #' @return
 #' @export
