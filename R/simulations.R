@@ -32,9 +32,9 @@
 #' @export
 #'
 #' @examples
-#' west.states <- data(west_states_data)
+#' data(west_states_data)
 #'
-#' sim1 <- generate.simulations(spatial.map = west.states,
+#' sim1 <- generate.simulations(spatial.map = west_states_data,
 #' K = 3,
 #' d = 10,
 #' Sigma = NULL,
@@ -44,19 +44,20 @@
 #' prob.null.centroid = 0.5,
 #' scale.factor.variance = 0.05,
 #' correct.mean.prob = F,
-#' plot.map = F)
+#' plot.map = T)
 #'
 #'
-#' sim2 <- generate.simulations(spatial.map = west.states,
+#' sim2 <- generate.simulations(spatial.map = west_states_data,
 #' K = 4,
 #' d = 3,
 #' Sigma = NULL,
-#' range.mu = 1, rho = c(0.01, 0.455, 0.9),
+#' range.mu = 1,
+#' rho = c(0.01, 0.455, 0.9),
 #' range.Sigma = 0.2,
 #' prob.null.centroid = 0.5,
 #' scale.factor.variance = 0.07,
 #' correct.mean.prob = F,
-#' plot.map = F)
+#' plot.map = T)
 #'
 generate.simulations <- function(spatial.map,
                                  K,
