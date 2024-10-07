@@ -2,17 +2,20 @@
 % Please edit documentation in R/posterior_predictive.R
 \name{posterior_predictive_sampling}
 \alias{posterior_predictive_sampling}
-\title{Generate values from the posterior predictive distribution}
+\title{Generate samples from the posterior predictive distribution}
 \usage{
-posterior_predictive_sampling(values, burnin = NULL)
+posterior_predictive_sampling(x, burnin = NULL)
 }
 \arguments{
-\item{values}{An output of the \code{perla} function.}
+\item{x}{An object of class \code{perla}.}
 
 \item{burnin}{A vector of indexes denoting the MCMC draws to be discarded
-(default \code{NULL} means no draws are discarded).}
+(default \code{NULL} means no draw to be discarded).}
+}
+\value{
+an array of dimension \verb{n x d x R}, where \code{n} is the number of areas in the map, \code{d} is the number of variables, and \code{R} is the number of MCMC iterations (minus the burnin, is given).
 }
 \description{
-This function generate a new dataset (with the same dimension of the input
+This function generates a collection of datasets (each of the same size of the input
 data) sampling from the posterior predictive distribution.
 }
