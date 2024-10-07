@@ -8,7 +8,7 @@
 #' @param burnin A vector of indexes denoting the MCMC draws to be discarded
 #' (default `NULL` means no draw to be discarded).
 #'
-#' @return an array of dimension `n x d x R`, where `n` is the number of areas in the map, `d` is the number of variables, and `R` is the number of MCMC iterations (minus the burnin, is given).
+#' @return An array of dimension `n x d x R`, where `n` is the number of areas in the map, `d` is the number of variables, and `R` is the number of MCMC iterations (minus the burnin, is given).
 #'
 #' @export
 #'

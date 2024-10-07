@@ -13,7 +13,7 @@ posterior_predictive_sampling(x, burnin = NULL)
 (default \code{NULL} means no draw to be discarded).}
 }
 \value{
-an array of dimension \verb{n x d x R}, where \code{n} is the number of areas in the map, \code{d} is the number of variables, and \code{R} is the number of MCMC iterations (minus the burnin, is given).
+An array of dimension \verb{n x d x R}, where \code{n} is the number of areas in the map, \code{d} is the number of variables, and \code{R} is the number of MCMC iterations (minus the burnin, is given).
 }
 \description{
 This function generates a collection of datasets (each of the same size of the input

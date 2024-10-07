@@ -24,7 +24,7 @@ remove.label.switching(
 \item{zpivot}{if furnished, it performs the relabelling using this vector as reference, otherwise the function will consider the partition corresponding to the largest log-likelihood value}
 }
 \value{
-a list of two elements.
+A list of two elements.
 \itemize{
 \item \code{results} contains the permuted clustering centroids and clustering probabilities for each method used to resolve the label switching;
 \item \code{relabelling} is the output of the \code{label.switching} function.

@@ -8,7 +8,7 @@
 #' @param methods default `("PRA","ECR")`
 #' @param zpivot if furnished, it performs the relabelling using this vector as reference, otherwise the function will consider the partition corresponding to the largest log-likelihood value
 #'
-#' @return a list of two elements.
+#' @return A list of two elements.
 #' - `results` contains the permuted clustering centroids and clustering probabilities for each method used to resolve the label switching;
 #' - `relabelling` is the output of the `label.switching` function.
 #' @export
