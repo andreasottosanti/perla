@@ -24,6 +24,7 @@ Data are available in the WONDER Online Database at
 https://wonder.cdc.gov/mcd-icd10.html.
 }
 \examples{
+library(sp)
 data(west_states_data)
 plot(west_states_data)
 

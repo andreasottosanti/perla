@@ -15,6 +15,7 @@
 #' @import sp
 #'
 #' @examples
+#' library(sp)
 #' data(west_states_data)
 #' plot(west_states_data)
 #'
