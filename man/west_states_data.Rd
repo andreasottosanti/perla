@@ -23,4 +23,9 @@ Data on mortality by U.S. counties from 2016 to 2019 for the West Coast.
 Data are available in the WONDER Online Database at
 https://wonder.cdc.gov/mcd-icd10.html.
 }
+\examples{
+data(west_states_data)
+plot(west_states_data)
+
+}
 \keyword{datasets}

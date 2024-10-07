@@ -15,6 +15,7 @@ Imports:
     label.switching,
     pgdraw,
     progress,
+    plot.matrix,
     sp,
     spdep,
     surveillance

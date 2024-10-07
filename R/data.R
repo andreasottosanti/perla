@@ -12,6 +12,12 @@
 #'
 #' @source {WONDER Online Database (https://wonder.cdc.gov/mcd-icd10.html).}
 #'
+#' @import sp
+#'
+#' @examples
+#' data(west_states_data)
+#' plot(west_states_data)
+#'
 "west_states_data"
 
 
@@ -26,5 +32,12 @@
 #' The file contains the neighbor matrix for the data `west_states_data`.
 #'
 #' @source {WONDER Online Database (https://wonder.cdc.gov/mcd-icd10.html).}
+#'
+#' @import sp
+#' @import plot.matrix
+#'
+#' @examples
+#' data(west_states_W)
+#' plot(west_states_W, key=NULL, axis.col = NULL, axis.row = NULL)
 #'
 "west_states_W"
