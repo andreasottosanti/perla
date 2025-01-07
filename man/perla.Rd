@@ -37,8 +37,8 @@ extracted from the \code{SpatialPolygonsDataFrame} data object.}
 parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}). If
 the parameter is set to \code{disc}, it is assumed equal to \code{rho}
 can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}. If \code{cont},
-it assumes that rho is generated from a mixture of a \code{dbeta(x,2,18)}
-(with probability \code{p.spike}) or a \code{dbeta(x,18,2)}.}
+it assumes that rho is generated from a \code{dbeta(x,2,18)}
+with probability \code{p.spike} or from a \code{dbeta(x,18,2)} with probability \code{1-p.spike}.}
 
 \item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
 indicates the probability of \code{rho} being \code{0}.}

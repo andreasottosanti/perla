@@ -34,8 +34,8 @@
 #' parameter is set to `const`, it is assumed as fixed value (`rho.value`). If
 #' the parameter is set to `disc`, it is assumed equal to `rho`
 #' can be equal to `0` (with probability `p.spike`) or `rho.value`. If `cont`,
-#' it assumes that rho is generated from a mixture of a `dbeta(x,2,18)`
-#' (with probability `p.spike`) or a `dbeta(x,18,2)`.
+#' it assumes that rho is generated from a `dbeta(x,2,18)`
+#' with probability `p.spike` or from a `dbeta(x,18,2)` with probability `1-p.spike`.
 #' @param rho.value Fixed value for the `rho` prior (default `0.99`).
 #' @param p.spike If the parameter `prior.rho`  is set to `disc`, `p.spike`
 #' indicates the probability of `rho` being `0`.
