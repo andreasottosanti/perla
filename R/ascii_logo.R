@@ -8,6 +8,7 @@ ascii_logo <- "
  | |    | |____| | \\ \\ | |__/_/     \\ \\
  |_|    |______|_|  \\_\\|______|      \\_\\
  ========================================
+ Penalised Regression with Locatilities Aggregation, v. 0.1.0
 "
 packageStartupMessage(ascii_logo)
 }
