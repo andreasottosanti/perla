@@ -112,21 +112,29 @@ perla <- function(y, W = NULL, K, R = 10^4,
   Z <- Prob <- array(0, dim = c(n, K, R.kept))
   Sigma <- array(0, dim = c(d, d, R.kept))
   Phi <- Zeta.d <- Zeta.c <- Zeta.cd <- NULL
-  if(!is.null(mean.penalty)){
-    cat("Applying global penalization;\n")
+  unicode_global <- unicode_features <- unicode_clusters <- unicode_features_clusters <- "✘"
+  if(length(mean.penalty) > 0){
+    #cat("Applying global penalization;\n")
+    unicode_global <- "✔"
     Phi <- numeric(R.kept)}
   if("d" %in% mean.penalty){
-    cat("Applying feature penalization;\n")
+    #cat("Applying feature penalization;\n")
+    unicode_features <- "✔"
     Zeta.d <- matrix(0, R.kept, d)}
   if("c" %in% mean.penalty){
-    cat("Applying cluster penalization;\n")
+    #cat("Applying cluster penalization;\n")
+    unicode_clusters <- "✔"
     Zeta.c <- matrix(0, R.kept, K)}
   if("cd" %in% mean.penalty){
-    cat("Applying feature-cluster penalization;\n")
+    #cat("Applying feature-cluster penalization;\n")
+    unicode_features_clusters <- "✔"
     Zeta.cd <- matrix(0, R.kept, K*d)}
   #cat("              Penalizations\n")
-  #cat("----------------------------------------------------")
-  #cat("Global   |   Features   |   Clusters   | Features-clusters")
+  cat(rep("=",11))
+  cat("\nPenalisation factors:\n")
+  cat(rep("=",11))
+  cat("\n")
+  cat(paste("global ",unicode_global," |  features  ",unicode_features," |  clusters  ",unicode_clusters," |  features-clusters  ",unicode_features_clusters,sep=""))
 
 
 # Default hyperparameters -------------------------------------------------
