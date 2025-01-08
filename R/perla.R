@@ -25,37 +25,40 @@
 #'
 #' @param y Input dataset. It can be either of class `matrix` or
 #' `SpatialPolygonsDataFrame`.
-#' @param W Adjacency matrix. If not specified, is set to the adjacency matrix
-#' extracted from the `SpatialPolygonsDataFrame` data object.
+#' @param W Adjacency matrix. It is required if `y` is of class `matrix`. If `y` is a `SpatialPolygonsDataFrame` object and `W` is not specified, then it is set equal to the adjacency matrix
+#' extracted from `y`.
 #' @param K Number of clusters.
-#' @param R Number of MCMC iterations (default `10^4`).
+#' @param R Number of MCMC iterations performed (default `10^4`).
 #' @param X a `data.frame` object containing the variables to use as covariates.
 #' @param prior.rho Type of prior on the `rho` parameter of the CAR. If the
 #' parameter is set to `const`, it is assumed as fixed value (`rho.value`). If
-#' the parameter is set to `disc`, it is assumed equal to `rho`
-#' can be equal to `0` (with probability `p.spike`) or `rho.value`. If `cont`,
-#' it assumes that rho is generated from a `dbeta(x,2,18)`
-#' with probability `p.spike` or from a `dbeta(x,18,2)` with probability `1-p.spike`.
+#' the parameter is set to `disc`, `rho` is allowed to take value `0` (with probability `p.spike`) or `rho.value` (with probability `1 - p.spike`).
+#' If `cont`, it assumes that rho is generated from a `dbeta(x, 2, 18)` with probability `p.spike` or from a `dbeta(x, 18, 2)` with probability `1 - p.spike`.
 #' @param rho.value Fixed value for the `rho` prior (default `0.99`).
 #' @param p.spike If the parameter `prior.rho`  is set to `disc`, `p.spike`
 #' indicates the probability of `rho` being `0`.
-#' @param mean.penalty If `c()`, only the global shrinkage is considered. If
-#' `mean.penalty` contains `"c"`, then cluster penalties are added. If
-#' `mean.penalty` contains `"d"`, then disease penalties are added. If
-#' `mean.penalty` contains `"cd"`, then both cluster and disease penalties are
-#' added. If `NULL`, no penalization is considered and the prior of cluster mean
-#' vectors are d-variate Gaussian distributions, zero-centered and with
-#' covariance matrix `Sigma0`.
+#' @param mean.penalty A vector specifying the shrinkage factors for the elements of `Mu`.
+#' It can include the following elements:
+#' - `1`: applies global shrinkage;
+#' - `"c"`: applies cluster-specific shrinkage;
+#' - `"d"`: applies feature-specific shrinkage;
+#' - `"cd"`: applies cluster-feature-specific shrinkage.
+#'
+#' If `"c"`, `"d"`, or `"cd"` are used, it is not necessary to include `1` in `mean.penalty`.
+#' Note that using only `"cd"` corresponds to applying the horseshoe prior.
+#' If `NULL`, no penalization is applied, and the prior for the cluster mean vectors is a
+#' d-variate Gaussian distribution centered at `mu0` with covariance matrix `Sigma0`.
 #' @param mu0 Vector with values for `mu0` hyperparameter. If NULL (default) the
 #' vector components are set equal to 0.
 #' @param Sigma0 Matrix with values for `Sigma0` hyperparameter. If NULL
 #' (default) the matrix components are set equal to 10.
-#' @param burnin A vector of indexes denoting the MCMC draws to be discarded. If
-#' `NULL`, then only the starting values are discarded and the algorithm will
-#' perform `R+1` iterations.
+#' @param burnin A vector of indices specifying the MCMC draws to discard from the `R` iterations.
+#' The resulting chains will have a length of `R - length(burnin)`.
+#' If set to `NULL`, only the initial values are discarded, and the algorithm
+#' will run for `R + 1` iterations.
 #' @param initialization It can be either an object of class `perla` or a list
 #' of starting points. In the last case, each list element must be named after
-#' a parameter to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`,
+#' the parameters to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`,
 #' `Rho`.
 #'
 #' @return
@@ -65,7 +68,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' perla(y = west_states_data, W = west_states_W, K = 3)}
+#' # running Perla without shrinkage parameters
+#' perla(y = west_states_data, W = west_states_W, K = 3)
+#'
+#' # running Perla with only the global shrinkage parameter
+#' perla(y = west_states_data, W = west_states_W, K = 3, mean.penalty = c(1))
+#'
+#' # running Perla with the global shrinkage parameter and the cluster-specific shrinkage parameters
+#' perla(y = west_states_data, W = west_states_W, K = 3, mean.penalty = c("c"))
+#' }
 #'
 
 perla <- function(y, W = NULL, K, R = 10^4,
@@ -73,7 +84,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
                   prior.rho = "const",
                   p.spike = .5,
                   rho.value = 0.99,
-                  mean.penalty = c(),
+                  mean.penalty = c(1),
                   mu0 = NULL,
                   Sigma0 = NULL,
                   burnin = NULL,

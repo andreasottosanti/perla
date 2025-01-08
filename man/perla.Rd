@@ -13,7 +13,7 @@ perla(
   prior.rho = "const",
   p.spike = 0.5,
   rho.value = 0.99,
-  mean.penalty = c(),
+  mean.penalty = c(1),
   mu0 = NULL,
   Sigma0 = NULL,
   burnin = NULL,
@@ -24,34 +24,38 @@ perla(
 \item{y}{Input dataset. It can be either of class \code{matrix} or
 \code{SpatialPolygonsDataFrame}.}
 
-\item{W}{Adjacency matrix. If not specified, is set to the adjacency matrix
-extracted from the \code{SpatialPolygonsDataFrame} data object.}
+\item{W}{Adjacency matrix. It is required if \code{y} is of class \code{matrix}. If \code{y} is a \code{SpatialPolygonsDataFrame} object and \code{W} is not specified, then it is set equal to the adjacency matrix
+extracted from \code{y}.}
 
 \item{K}{Number of clusters.}
 
-\item{R}{Number of MCMC iterations (default \code{10^4}).}
+\item{R}{Number of MCMC iterations performed (default \code{10^4}).}
 
 \item{X}{a \code{data.frame} object containing the variables to use as covariates.}
 
 \item{prior.rho}{Type of prior on the \code{rho} parameter of the CAR. If the
 parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}). If
-the parameter is set to \code{disc}, it is assumed equal to \code{rho}
-can be equal to \code{0} (with probability \code{p.spike}) or \code{rho.value}. If \code{cont},
-it assumes that rho is generated from a \code{dbeta(x,2,18)}
-with probability \code{p.spike} or from a \code{dbeta(x,18,2)} with probability \code{1-p.spike}.}
+the parameter is set to \code{disc}, \code{rho} is allowed to take value \code{0} (with probability \code{p.spike}) or \code{rho.value} (with probability \code{1 - p.spike}).
+If \code{cont}, it assumes that rho is generated from a \code{dbeta(x, 2, 18)} with probability \code{p.spike} or from a \code{dbeta(x, 18, 2)} with probability \code{1 - p.spike}.}
 
 \item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
 indicates the probability of \code{rho} being \code{0}.}
 
 \item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 
-\item{mean.penalty}{If \code{c()}, only the global shrinkage is considered. If
-\code{mean.penalty} contains \code{"c"}, then cluster penalties are added. If
-\code{mean.penalty} contains \code{"d"}, then disease penalties are added. If
-\code{mean.penalty} contains \code{"cd"}, then both cluster and disease penalties are
-added. If \code{NULL}, no penalization is considered and the prior of cluster mean
-vectors are d-variate Gaussian distributions, zero-centered and with
-covariance matrix \code{Sigma0}.}
+\item{mean.penalty}{A vector specifying the shrinkage factors for the elements of \code{Mu}.
+It can include the following elements:
+\itemize{
+\item \code{1}: applies global shrinkage;
+\item \code{"c"}: applies cluster-specific shrinkage;
+\item \code{"d"}: applies feature-specific shrinkage;
+\item \code{"cd"}: applies cluster-feature-specific shrinkage.
+}
+
+If \code{"c"}, \code{"d"}, or \code{"cd"} are used, it is not necessary to include \code{1} in \code{mean.penalty}.
+Note that using only \code{"cd"} corresponds to applying the horseshoe prior.
+If \code{NULL}, no penalization is applied, and the prior for the cluster mean vectors is a
+d-variate Gaussian distribution centered at \code{mu0} with covariance matrix \code{Sigma0}.}
 
 \item{mu0}{Vector with values for \code{mu0} hyperparameter. If NULL (default) the
 vector components are set equal to 0.}
@@ -59,13 +63,14 @@ vector components are set equal to 0.}
 \item{Sigma0}{Matrix with values for \code{Sigma0} hyperparameter. If NULL
 (default) the matrix components are set equal to 10.}
 
-\item{burnin}{A vector of indexes denoting the MCMC draws to be discarded. If
-\code{NULL}, then only the starting values are discarded and the algorithm will
-perform \code{R+1} iterations.}
+\item{burnin}{A vector of indices specifying the MCMC draws to discard from the \code{R} iterations.
+The resulting chains will have a length of \code{R - length(burnin)}.
+If set to \code{NULL}, only the initial values are discarded, and the algorithm
+will run for \code{R + 1} iterations.}
 
 \item{initialization}{It can be either an object of class \code{perla} or a list
 of starting points. In the last case, each list element must be named after
-a parameter to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma},
+the parameters to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma},
 \code{Rho}.}
 }
 \value{
@@ -89,6 +94,14 @@ model parameter, without requiring complex tuning operations.
 }
 \examples{
 \dontrun{
-perla(y = west_states_data, W = west_states_W, K = 3)}
+# running Perla without shrinkage parameters
+perla(y = west_states_data, W = west_states_W, K = 3)
+
+# running Perla with only the global shrinkage parameter
+perla(y = west_states_data, W = west_states_W, K = 3, mean.penalty = c(1))
+
+# running Perla with the global shrinkage parameter and the cluster-specific shrinkage parameters
+perla(y = west_states_data, W = west_states_W, K = 3, mean.penalty = c("c"))
+}
 
 }
