@@ -58,9 +58,8 @@
 #' will run for `R + 1` iterations.
 #' @param initialization It can be either an object of class `perla` or a list
 #' of starting points. In the last case, each list element must be named after
-#' the parameters to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`,
-#' `Rho`.
-#'
+#' the parameters to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`.
+#' @param tau The marginal variance parameter of the CAR model (default is 1).
 #' @return
 #' An object of class `perla`.
 #'
@@ -84,6 +83,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
                   prior.rho = "const",
                   p.spike = .5,
                   rho.value = 0.99,
+                  tau = 1,
                   mean.penalty = c(1),
                   mu0 = NULL,
                   Sigma0 = NULL,
@@ -95,7 +95,6 @@ perla <- function(y, W = NULL, K, R = 10^4,
   }
   n <- nrow(y)
   d <- ncol(y)
-  tau <- 1
   if(p.spike < 0 | p.spike > 1) stop("p.spike is not a probability")
 
 
@@ -129,11 +128,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
     #cat("Applying feature-cluster penalization;\n")
     unicode_features_clusters <- "✔"
     Zeta.cd <- matrix(0, R.kept, K*d)}
-  #cat("              Penalizations\n")
-  cat(rep("=",11))
-  cat("\nPenalisation factors:\n")
-  cat(rep("=",11))
-  cat("\n")
+  cat("Penalisation factors:\n")
   cat(paste("global ",unicode_global," |  features  ",unicode_features," |  clusters  ",unicode_clusters," |  features-clusters  ",unicode_features_clusters,sep=""))
 
 
@@ -261,6 +256,8 @@ perla <- function(y, W = NULL, K, R = 10^4,
       acceptance.rho <- acceptance.rho + rho.updated$accepted
       Rho.current <- rho.updated$rho
     }
+
+    # --update tau
 
     # --update Sigma
     resid <- y - Z.current %*% Mu.current

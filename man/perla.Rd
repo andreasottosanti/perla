@@ -13,6 +13,7 @@ perla(
   prior.rho = "const",
   p.spike = 0.5,
   rho.value = 0.99,
+  tau = 1,
   mean.penalty = c(1),
   mu0 = NULL,
   Sigma0 = NULL,
@@ -43,6 +44,8 @@ indicates the probability of \code{rho} being \code{0}.}
 
 \item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 
+\item{tau}{The marginal variance parameter of the CAR model (default is 1).}
+
 \item{mean.penalty}{A vector specifying the shrinkage factors for the elements of \code{Mu}.
 It can include the following elements:
 \itemize{
@@ -70,8 +73,7 @@ will run for \code{R + 1} iterations.}
 
 \item{initialization}{It can be either an object of class \code{perla} or a list
 of starting points. In the last case, each list element must be named after
-the parameters to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma},
-\code{Rho}.}
+the parameters to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma}, \code{Rho}.}
 }
 \value{
 An object of class \code{perla}.
