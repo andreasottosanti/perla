@@ -10,11 +10,9 @@
 #' `perla` object passed as input.
 #'
 #' @return
-#' Returns the information criteria of the estimated `perla` model.
+#' The information criteria of the estimated `perla` model. The smaller is the value, the better is the model fitting.
 #'
 #' @export
-#'
-#' @examples
 #'
 
 information.criteria <- function(values, loglikelihood.values = NULL){

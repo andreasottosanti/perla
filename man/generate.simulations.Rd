@@ -7,12 +7,13 @@
 generate.simulations(
   spatial.map,
   K,
-  X = NULL,
   d = NULL,
+  X = NULL,
   Sigma = NULL,
   z = NULL,
   range.mu,
   range.Sigma,
+  range.beta = 1,
   rho,
   prob.null.centroid = 0.5,
   scale.factor.variance = 0.05,
@@ -26,19 +27,21 @@ to simulate from.}
 
 \item{K}{Number of clusters.}
 
-\item{X}{(optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.}
-
 \item{d}{Number of the events that are inducing the clusters.}
+
+\item{X}{(optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.}
 
 \item{Sigma}{Correlation matrix across the events that are inducing the
 clusters.}
 
-\item{z}{(optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution.}
+\item{z}{(optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution and \code{K} will be set equal to the number of unique values in \code{z}.}
 
 \item{range.mu}{Range of the uniform distribution used in data generation.}
 
 \item{range.Sigma}{Range of the uniform distribution used to generate the
 correlation matrix Sigma.}
+
+\item{range.beta}{(optional) the standard deviation of the Gaussian distribution used to generate the regression coefficients}
 
 \item{rho}{\code{rho} parameter of the DAGAR.}
 
