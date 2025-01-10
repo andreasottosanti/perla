@@ -25,6 +25,8 @@
 #' @param correct.mean.prob Use the stick-breaking formulation of the
 #' multinomial distribution while simulating (default `FALSE`).
 #' @param plot.map Plot the map during the simulation (default `FALSE`).
+#' @param X (optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.
+#' @param z (optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution and `K` will be set equal to the number of unique values in `z`.
 #'
 #' @return
 #' The function returns the map and the simulated data.
@@ -61,8 +63,10 @@
 #'
 generate.simulations <- function(spatial.map,
                                  K,
+                                 X = NULL,
                                  d = NULL,
                                  Sigma = NULL,
+                                 z = NULL,
                                  range.mu,
                                  range.Sigma,
                                  rho,
@@ -73,6 +77,10 @@ generate.simulations <- function(spatial.map,
 ){
 
   if(!is.null(Sigma)) d <- nrow(Sigma)
+  if(!is.null(z)){
+    if(any(sort(unique(z)) != (1:length(unique(z))))) stop(paste("z is not a vector of values from 1 to",length(unique(z))))
+    K <- max(z)
+  }
 
   # order the map
   new.ordering <- order.map(map = spatial.map, reorder = F)
@@ -83,16 +91,21 @@ generate.simulations <- function(spatial.map,
   n <- nrow(new.ordering$map)
 
   # DAGAR generation: define the probabilities
-  Psi <- matrix(0, n, K-1)
-  for(r in 1:(K-1))
-    Psi[,r] <- generate.from.DAGAR(rho = rho[r],W.lower = new.ordering$W.o.lower)+rep(-log(K-r), n) * correct.mean.prob
-  Prob <- data.frame(convert.to.probabilities(psi = Psi))
-  row.names(Prob) <- row.names(new.ordering$map)
-  map.prob <- SpatialPolygonsDataFrame(SpatialPolygons(new.ordering$map@polygons), Prob)
+  map.prob <- NULL
+  if(is.null(z)){
+    Psi <- matrix(0, n, K-1)
+    for(r in 1:(K-1))
+      Psi[,r] <- generate.from.DAGAR(rho = rho[r],W.lower = new.ordering$W.o.lower)+rep(-log(K-r), n) * correct.mean.prob
+    Prob <- data.frame(convert.to.probabilities(psi = Psi))
+    row.names(Prob) <- row.names(new.ordering$map)
+    map.prob <- SpatialPolygonsDataFrame(SpatialPolygons(new.ordering$map@polygons), Prob)
+  }
 
   # Deterministic allocation: definition of the clusters using the probabilities
-  z <- numeric(n)
-  z <- apply(Prob, 1, which.max)
+  if(is.null(z)){
+    z <- numeric(n)
+    z <- apply(Prob, 1, which.max)
+  }
   Z <- convert.Z.vector_to_matrix(z)
   if(plot.map) plot(new.ordering$map, col = z)
 
@@ -100,6 +113,15 @@ generate.simulations <- function(spatial.map,
   Mu <- matrix(0, K, d)
   for(j in 1:d)
     if(runif(1) < (1-prob.null.centroid)) Mu[,j] <- runif(K, -range.mu, range.mu) else Mu[,j] <- 0
+
+  # generate the regression coefficients
+  B <- NULL
+  if(!is.null(X)){
+    if(!is.data.frame(X)) stop("X is not a data.frame object")
+    x <- model.matrix(~.-1, X)
+    p <- ncol(x)
+    B <- matrix(rnorm(p * d), p, d)
+  }
 
   # generate Sigma, correlation matrix across causes of death, if it isn't given in input
   if(is.null(Sigma)){
@@ -114,9 +136,10 @@ generate.simulations <- function(spatial.map,
   # generate the data
   y <- matrix(0, n, ncol(Sigma))
   eta <- Z %*% Mu
+  if(!is.null(X)) eta <- eta + X %*% B
   for(i in 1:n)
     y[i,] <- rmvn(n = 1, mu = eta[i,], Sigma = Sigma)
-  row.names(y) <- row.names(Prob)
+  row.names(y) <- row.names(new.ordering$map)
   rho.true <- rho
   Mu.true <- Mu
   map <- SpatialPolygonsDataFrame(SpatialPolygons(new.ordering$map@polygons),
@@ -129,6 +152,7 @@ generate.simulations <- function(spatial.map,
               map.prob = map.prob,
               z = z,
               Sigma = Sigma,
+              B = B,
               D = D,
               W = W,
               rho.true = rho.true))

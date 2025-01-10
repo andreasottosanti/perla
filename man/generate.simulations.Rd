@@ -7,8 +7,10 @@
 generate.simulations(
   spatial.map,
   K,
+  X = NULL,
   d = NULL,
   Sigma = NULL,
+  z = NULL,
   range.mu,
   range.Sigma,
   rho,
@@ -24,10 +26,14 @@ to simulate from.}
 
 \item{K}{Number of clusters.}
 
+\item{X}{(optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.}
+
 \item{d}{Number of the events that are inducing the clusters.}
 
 \item{Sigma}{Correlation matrix across the events that are inducing the
 clusters.}
+
+\item{z}{(optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution.}
 
 \item{range.mu}{Range of the uniform distribution used in data generation.}
 
