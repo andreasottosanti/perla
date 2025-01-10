@@ -80,6 +80,7 @@ generate.simulations <- function(spatial.map,
   if(!is.null(z)){
     if(any(sort(unique(z)) != (1:length(unique(z))))) stop(paste("z is not a vector of values from 1 to",length(unique(z))))
     K <- max(z)
+    print(K)
   }
 
   # order the map
