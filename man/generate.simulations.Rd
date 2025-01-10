@@ -25,16 +25,15 @@ generate.simulations(
 \item{spatial.map}{A \code{SpatialPolygonsDataFrame} object with the map you want
 to simulate from.}
 
-\item{K}{Number of clusters.}
+\item{K}{Number of clusters (if \code{z} is passed, it is ignored).}
 
-\item{d}{Number of the events that are inducing the clusters.}
+\item{d}{Number of variables (if \code{Sigma} is passed, it is ignored).}
 
-\item{X}{(optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.}
+\item{X}{(optional) a data.frame containing some possible covariates. If passed, each value of the matrix of regression coefficients will be generated using \code{rnorm(1, 0, range.beta)}.}
 
-\item{Sigma}{Correlation matrix across the events that are inducing the
-clusters.}
+\item{Sigma}{(optional) correlation matrix of the variables.}
 
-\item{z}{(optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution and \code{K} will be set equal to the number of unique values in \code{z}.}
+\item{z}{(optional) a vector of clustering labels. If passed, the clusters will not be generated randomly using the multinomial distribution, and \code{K} will be set equal to the number of unique values of \code{z}.}
 
 \item{range.mu}{Range of the uniform distribution used in data generation.}
 
@@ -45,8 +44,7 @@ correlation matrix Sigma.}
 
 \item{rho}{\code{rho} parameter of the DAGAR.}
 
-\item{prob.null.centroid}{Probability of the uniform distribution used in
-data generation.}
+\item{prob.null.centroid}{Probability that the \code{K} centroids related to a certain variable are zero. This is used to simulate scenarios where not all the \code{d} variables are responsible of the formation of the \code{K} clusters.}
 
 \item{scale.factor.variance}{Scaling factor for variance-covariance matrix
 (default 0.05).}

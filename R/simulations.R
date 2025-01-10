@@ -10,23 +10,21 @@
 #'
 #' @param spatial.map A `SpatialPolygonsDataFrame` object with the map you want
 #' to simulate from.
-#' @param K Number of clusters.
-#' @param Sigma Correlation matrix across the events that are inducing the
-#' clusters.
+#' @param K Number of clusters (if `z` is passed, it is ignored).
+#' @param Sigma (optional) correlation matrix of the variables.
 #' @param rho `rho` parameter of the DAGAR.
-#' @param d Number of the events that are inducing the clusters.
+#' @param d Number of variables (if `Sigma` is passed, it is ignored).
 #' @param range.mu Range of the uniform distribution used in data generation.
 #' @param range.Sigma Range of the uniform distribution used to generate the
 #' correlation matrix Sigma.
-#' @param prob.null.centroid Probability of the uniform distribution used in
-#' data generation.
+#' @param prob.null.centroid Probability that the `K` centroids related to a certain variable are zero. This is used to simulate scenarios where not all the `d` variables are responsible of the formation of the `K` clusters.
 #' @param scale.factor.variance Scaling factor for variance-covariance matrix
 #' (default 0.05).
 #' @param correct.mean.prob Use the stick-breaking formulation of the
 #' multinomial distribution while simulating (default `FALSE`).
 #' @param plot.map Plot the map during the simulation (default `FALSE`).
-#' @param X (optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.
-#' @param z (optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution and `K` will be set equal to the number of unique values in `z`.
+#' @param X (optional) a data.frame containing some possible covariates. If passed, each value of the matrix of regression coefficients will be generated using `rnorm(1, 0, range.beta)`.
+#' @param z (optional) a vector of clustering labels. If passed, the clusters will not be generated randomly using the multinomial distribution, and `K` will be set equal to the number of unique values of `z`.
 #' @param range.beta (optional) the standard deviation of the Gaussian distribution used to generate the regression coefficients
 #'
 #' @return
