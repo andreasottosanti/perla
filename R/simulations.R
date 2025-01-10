@@ -138,7 +138,7 @@ generate.simulations <- function(spatial.map,
   # generate the data
   y <- matrix(0, n, ncol(Sigma))
   eta <- Z %*% Mu
-  if(!is.null(X)) eta <- eta + X %*% B
+  if(!is.null(X)) eta <- eta + x %*% B
   for(i in 1:n)
     y[i,] <- rmvn(n = 1, mu = eta[i,], Sigma = Sigma)
   row.names(y) <- row.names(new.ordering$map)
