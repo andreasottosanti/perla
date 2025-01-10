@@ -27,6 +27,7 @@
 #' @param plot.map Plot the map during the simulation (default `FALSE`).
 #' @param X (optional) a data.frame containing some possible covariates. If passed, the matrix of regression coefficients will be generated from a N(0,1) distribution.
 #' @param z (optional) a vector giving the clustering labels. If passed, the clusters will not be random generated using the multinomial distribution and `K` will be set equal to the number of unique values in `z`.
+#' @param range.beta (optional) the standard deviation of the Gaussian distribution used to generate the regression coefficients
 #'
 #' @return
 #' The function returns the map and the simulated data.
@@ -63,12 +64,13 @@
 #'
 generate.simulations <- function(spatial.map,
                                  K,
-                                 X = NULL,
                                  d = NULL,
+                                 X = NULL,
                                  Sigma = NULL,
                                  z = NULL,
                                  range.mu,
                                  range.Sigma,
+                                 range.beta = 1,
                                  rho,
                                  prob.null.centroid = 0.5,
                                  scale.factor.variance = 0.05,
@@ -80,7 +82,6 @@ generate.simulations <- function(spatial.map,
   if(!is.null(z)){
     if(any(sort(unique(z)) != (1:length(unique(z))))) stop(paste("z is not a vector of values from 1 to",length(unique(z))))
     K <- max(z)
-    print(K)
   }
 
   # order the map
@@ -121,7 +122,7 @@ generate.simulations <- function(spatial.map,
     if(!is.data.frame(X)) stop("X is not a data.frame object")
     x <- model.matrix(~.-1, X)
     p <- ncol(x)
-    B <- matrix(rnorm(p * d), p, d)
+    B <- matrix(rnorm(p * d, 0, range.beta), p, d)
   }
 
   # generate Sigma, correlation matrix across causes of death, if it isn't given in input
