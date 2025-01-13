@@ -6,7 +6,7 @@
 \usage{
 generate.simulations(
   spatial.map,
-  K,
+  K = NULL,
   d = NULL,
   X = NULL,
   Sigma = NULL,

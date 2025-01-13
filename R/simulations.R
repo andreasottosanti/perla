@@ -61,7 +61,7 @@
 #' plot.map = T)
 #'
 generate.simulations <- function(spatial.map,
-                                 K,
+                                 K = NULL,
                                  d = NULL,
                                  X = NULL,
                                  Sigma = NULL,
