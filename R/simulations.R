@@ -25,6 +25,7 @@
 #' @param plot.map Plot the map during the simulation (default `FALSE`).
 #' @param X (optional) a data.frame containing some possible covariates. If passed, each value of the matrix of regression coefficients will be generated using `rnorm(1, 0, range.beta)`.
 #' @param z (optional) a vector of clustering labels. If passed, the clusters will not be generated randomly using the multinomial distribution, and `K` will be set equal to the number of unique values of `z`.
+#' @param Mu (optional) a matrix of cluster centroids. It must have `K` rows and `d` columns. If passed, the cluster centroids are no longer generated randomly.
 #' @param range.beta (optional) the standard deviation of the Gaussian distribution used to generate the regression coefficients
 #'
 #' @return
@@ -66,6 +67,7 @@ generate.simulations <- function(spatial.map,
                                  X = NULL,
                                  Sigma = NULL,
                                  z = NULL,
+                                 Mu = NULL,
                                  range.mu,
                                  range.Sigma,
                                  range.beta = 1,
@@ -110,9 +112,10 @@ generate.simulations <- function(spatial.map,
   if(plot.map) plot(new.ordering$map, col = z)
 
   # generate Mu
-  Mu <- matrix(0, K, d)
-  for(j in 1:d)
-    if(runif(1) < (1-prob.null.centroid)) Mu[,j] <- runif(K, -range.mu, range.mu) else Mu[,j] <- 0
+  if(is.null(Mu)){
+    Mu <- matrix(0, K, d)
+    for(j in 1:d)
+      if(runif(1) < (1-prob.null.centroid)) Mu[,j] <- runif(K, -range.mu, range.mu) else Mu[,j] <- 0}
 
   # generate the regression coefficients
   B <- NULL

@@ -11,6 +11,7 @@ generate.simulations(
   X = NULL,
   Sigma = NULL,
   z = NULL,
+  Mu = NULL,
   range.mu,
   range.Sigma,
   range.beta = 1,
@@ -34,6 +35,8 @@ to simulate from.}
 \item{Sigma}{(optional) correlation matrix of the variables.}
 
 \item{z}{(optional) a vector of clustering labels. If passed, the clusters will not be generated randomly using the multinomial distribution, and \code{K} will be set equal to the number of unique values of \code{z}.}
+
+\item{Mu}{(optional) a matrix of cluster centroids. It must have \code{K} rows and \code{d} columns. If passed, the cluster centroids are no longer generated randomly.}
 
 \item{range.mu}{Range of the uniform distribution used in data generation.}
 
