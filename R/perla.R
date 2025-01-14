@@ -181,7 +181,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
   if(!is.null(X)){
     if(class(X) != "data.frame") stop("X is not a 'data.frame' object")
-    clean_reg <- lm(y ~ ., data = X)
+    clean_reg <- lm(y ~ .-1, data = X)
     y <- residuals(clean_reg)
   }
 
