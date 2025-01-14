@@ -79,6 +79,10 @@ generate.simulations <- function(spatial.map,
 ){
 
   if(!is.null(Sigma)) d <- nrow(Sigma)
+  if(!is.null(Mu)) d <- ncol(Mu)
+  if(!is.null(Sigma) & !is.null(Mu)){
+    if(nrow(Sigma) != ncol(Mu)) stop("The number of rows of Sigma does not match the number of columns of Mu")
+  }
   if(!is.null(z)){
     if(any(sort(unique(z)) != (1:length(unique(z))))) stop(paste("z is not a vector of values from 1 to",length(unique(z))))
     K <- max(z)
