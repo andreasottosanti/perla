@@ -11,9 +11,12 @@ perla(
   R = 10^4,
   X = NULL,
   prior.rho = "const",
-  p.spike = 0.5,
   rho.value = 0.99,
-  tau = 1,
+  p.spike = 0.5,
+  prior.tau = "const",
+  tau.value = 1,
+  tau.hyperpar = c(2.1, 3.1),
+  tau.tuning = 1,
   mean.penalty = c(1),
   mu0 = NULL,
   Sigma0 = NULL,
@@ -39,12 +42,24 @@ parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}
 the parameter is set to \code{disc}, \code{rho} is allowed to take value \code{0} (with probability \code{p.spike}) or \code{rho.value} (with probability \code{1 - p.spike}).
 If \code{cont}, it assumes that rho is generated from a \code{dbeta(x, 2, 18)} with probability \code{p.spike} or from a \code{dbeta(x, 18, 2)} with probability \code{1 - p.spike}.}
 
+\item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
+
 \item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
 indicates the probability of \code{rho} being \code{0}.}
 
-\item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
+\item{prior.tau}{Type of prior on the \code{tau} parameter of the CAR. If the
+parameter is set to \code{const}, it is assumed as fixed value (\code{tau.value}). If
+the parameter is set to \code{conj} or \code{metropolis}, then the parameter is updated via MCMC, considering the conjugate prior \code{dinvgamma(x, tau.hyperpar[1], tau.hyperpar[2])}.
+In the first case, a Gibbs sampling is used, otherwise the sampling is performed via Metropolis-Hastings algorithm, generating candidate values from a log-Normal distribution.}
 
-\item{tau}{The marginal variance parameter of the CAR model (default is 1).}
+\item{tau.value}{A value for the marginal variance parameter of the CAR model (default is 1).
+If \code{prior.tau == 'const'}, then \code{tau.value} remains fixed, while if \code{prior.tau == 'conj'}, then \code{tau.value} is used to initialise the MCMC algorithm.}
+
+\item{tau.hyperpar}{A vector of length 2 containing the shape and the scale of the inverse gamma distribution used as a prior for tau.
+If \code{tau.value == 'const'}, this is ignored.}
+
+\item{tau.tuning}{A tuning parameter used when \verb{tau.hyperpar == metropolis'} (default \code{1}). Proposed values are generated from \code{rlnorm} with \code{meanlog = log(tau_current)} and \code{sdlog = tau.tuning}.
+If \code{tau.value != 'metropolis'}, this is ignored.}
 
 \item{mean.penalty}{A vector specifying the shrinkage factors for the elements of \code{Mu}.
 It can include the following elements:
@@ -93,6 +108,8 @@ concrete differences across mortality levels, while excluding spurious
 differences. PERLA is estimated with an MCMC algorithm for posterior
 inference that consists of closed-form Gibbs sampling moves for nearly every
 model parameter, without requiring complex tuning operations.
+
+The model parameters and the clustering labels are initialised at random.
 }
 \examples{
 \dontrun{
