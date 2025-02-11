@@ -30,13 +30,16 @@
 #' @param K Number of clusters.
 #' @param R Number of MCMC iterations performed (default `10^4`).
 #' @param X a `data.frame` object containing the variables to use as covariates.
-#' @param prior.rho Type of prior on the `rho` parameter of the CAR. If the
-#' parameter is set to `const`, it is assumed as fixed value (`rho.value`). If
-#' the parameter is set to `disc`, `rho` is allowed to take value `0` (with probability `p.spike`) or `rho.value` (with probability `1 - p.spike`).
-#' If `cont`, it assumes that rho is generated from a `dbeta(x, 2, 18)` with probability `p.spike` or from a `dbeta(x, 18, 2)` with probability `1 - p.spike`.
-#' @param rho.value Fixed value for the `rho` prior (default `0.99`).
-#' @param p.spike If the parameter `prior.rho`  is set to `disc`, `p.spike`
-#' indicates the probability of `rho` being `0`.
+#' @param prior.rho Type of prior on the `rho` parameter of the CAR:
+#'
+#' - If `const` (default), then the model assumes a fixed `rho.value`.
+#' - If `disc`, then `rho` takes a priori value `0` with probability `p.spike`, and `rho.value` with probability `1 - p.spike`.
+#' - If `cont`, then `rho` is assumed a priori to come from a `dbeta(x, 2, 18)` with probability `p.spike`, or from a `dbeta(x, 18, 2)` with probability `1 - p.spike`.
+#' @param rho.value A value for the `rho` parameter of the CAR (default is 1).
+#' If `prior.rho == 'const'`, then `rho.value` remains fixed, otherwise it is used to initialise the MCMC algorithm.
+#' @param p.spike If `prior.rho == 'disc'`, then `p.spike`
+#' gives the probability that `rho` is a priori equal to `0`. If `prior.rho == 'cont'`, then `p.spike`
+#' gives the probability that `rho` is a priori drawn from a `dbeta(x, 2, 18)`.
 #' @param mean.penalty A vector specifying the shrinkage factors for the elements of `Mu`.
 #' It can include the following elements:
 #' - `1`: applies global shrinkage;
@@ -59,16 +62,17 @@
 #' @param initialization It can be either an object of class `perla` or a list
 #' of starting points. In the last case, each list element must be named after
 #' the parameters to be initialized. Names include `Mu`, `Prob`, `Z`, `Sigma`, `Rho`.
-#' @param prior.tau Type of prior on the `tau` parameter of the CAR. If the
-#' parameter is set to `const`, it is assumed as fixed value (`tau.value`). If
-#' the parameter is set to `conj` or `metropolis`, then the parameter is updated via MCMC, considering the conjugate prior `dinvgamma(x, tau.hyperpar[1], tau.hyperpar[2])`.
-#' In the first case, a Gibbs sampling is used, otherwise the sampling is performed via Metropolis-Hastings algorithm, generating candidate values from a log-Normal distribution.
+#' @param prior.tau Type of prior on the `tau` parameter of the CAR.
+#'
+#' - If `const` (default), then the model assumes a fixed `tau.value`.
+#' - If `conj` or `metropolis`, then the parameter is assumed to distribute a priori as an inverse gamma distribution with shape `tau.hyperpar[1]` and scale `tau.hyperpar[2]`.
+#' If `conj`, the update is performed via Gibbs sampling, otherwise it is performed through the Metropolis-Hastings algorithm, generating candidate values from a log-Normal distribution (see `tau.tuning`).
 #' @param tau.value A value for the marginal variance parameter of the CAR model (default is 1).
-#' If `prior.tau == 'const'`, then `tau.value` remains fixed, while if `prior.tau == 'conj'`, then `tau.value` is used to initialise the MCMC algorithm.
-#' @param tau.hyperpar A vector of length 2 containing the shape and the scale of the inverse gamma distribution used as a prior for tau.
-#' If `tau.value == 'const'`, this is ignored.
-#' @param tau.tuning A tuning parameter used when `tau.hyperpar == metropolis'` (default `1`). Proposed values are generated from `rlnorm` with `meanlog = log(tau_current)` and `sdlog = tau.tuning`.
-#' If `tau.value != 'metropolis'`, this is ignored.
+#' If `prior.tau == 'const'`, then `tau.value` remains fixed, otherwise it is used to initialise the MCMC algorithm.
+#' @param tau.hyperpar A vector of length 2 containing the shape and the scale of the inverse gamma distribution used as a prior for `tau`.
+#' It is ignored if `prior.tau == 'const'`.
+#' @param tau.tuning A tuning parameter used when `prior.tau` is set to `'metropolis'`.
+#' The logarithm of a candidate value is drawn from a Gaussian distribution centered in the logarithm of the parameter value at the previous iteration, and with standard deviation `tau.tuning`.
 #' @return
 #' An object of class `perla`.
 #'

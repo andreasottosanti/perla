@@ -37,29 +37,33 @@ extracted from \code{y}.}
 
 \item{X}{a \code{data.frame} object containing the variables to use as covariates.}
 
-\item{prior.rho}{Type of prior on the \code{rho} parameter of the CAR. If the
-parameter is set to \code{const}, it is assumed as fixed value (\code{rho.value}). If
-the parameter is set to \code{disc}, \code{rho} is allowed to take value \code{0} (with probability \code{p.spike}) or \code{rho.value} (with probability \code{1 - p.spike}).
-If \code{cont}, it assumes that rho is generated from a \code{dbeta(x, 2, 18)} with probability \code{p.spike} or from a \code{dbeta(x, 18, 2)} with probability \code{1 - p.spike}.}
+\item{prior.rho}{Type of prior on the \code{rho} parameter of the CAR:
+\itemize{
+\item If \code{const} (default), then the model assumes a fixed \code{rho.value}.
+\item If \code{disc}, then \code{rho} takes a priori value \code{0} with probability \code{p.spike}, and \code{rho.value} with probability \code{1 - p.spike}.
+\item If \code{cont}, then \code{rho} is assumed a priori to come from a \code{dbeta(x, 2, 18)} with probability \code{p.spike}, or from a \code{dbeta(x, 18, 2)} with probability \code{1 - p.spike}.
+}}
 
 \item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
 
 \item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
 indicates the probability of \code{rho} being \code{0}.}
 
-\item{prior.tau}{Type of prior on the \code{tau} parameter of the CAR. If the
-parameter is set to \code{const}, it is assumed as fixed value (\code{tau.value}). If
-the parameter is set to \code{conj} or \code{metropolis}, then the parameter is updated via MCMC, considering the conjugate prior \code{dinvgamma(x, tau.hyperpar[1], tau.hyperpar[2])}.
-In the first case, a Gibbs sampling is used, otherwise the sampling is performed via Metropolis-Hastings algorithm, generating candidate values from a log-Normal distribution.}
+\item{prior.tau}{Type of prior on the \code{tau} parameter of the CAR.
+\itemize{
+\item If \code{const} (default), then the model assumes a fixed \code{tau.value}.
+\item If \code{conj} or \code{metropolis}, then the parameter is assumed to distribute a priori as an inverse gamma distribution with shape \code{tau.hyperpar[1]} and scale \code{tau.hyperpar[2]}.
+If \code{conj}, the update is performed via Gibbs sampling, otherwise it is performed through the Metropolis-Hastings algorithm, generating candidate values from a log-Normal distribution (see \code{tau.tuning}).
+}}
 
 \item{tau.value}{A value for the marginal variance parameter of the CAR model (default is 1).
-If \code{prior.tau == 'const'}, then \code{tau.value} remains fixed, while if \code{prior.tau == 'conj'}, then \code{tau.value} is used to initialise the MCMC algorithm.}
+If \code{prior.tau == 'const'}, then \code{tau.value} remains fixed, otherwise it is used to initialise the MCMC algorithm.}
 
-\item{tau.hyperpar}{A vector of length 2 containing the shape and the scale of the inverse gamma distribution used as a prior for tau.
-If \code{tau.value == 'const'}, this is ignored.}
+\item{tau.hyperpar}{A vector of length 2 containing the shape and the scale of the inverse gamma distribution used as a prior for \code{tau}.
+It is ignored if \code{prior.tau == 'const'}.}
 
-\item{tau.tuning}{A tuning parameter used when \verb{tau.hyperpar == metropolis'} (default \code{1}). Proposed values are generated from \code{rlnorm} with \code{meanlog = log(tau_current)} and \code{sdlog = tau.tuning}.
-If \code{tau.value != 'metropolis'}, this is ignored.}
+\item{tau.tuning}{A tuning parameter used when \code{prior.tau} is set to \code{'metropolis'}.
+The logarithm of a candidate value is drawn from a Gaussian distribution centered in the logarithm of the parameter value at the previous iteration, and with standard deviation \code{tau.tuning}.}
 
 \item{mean.penalty}{A vector specifying the shrinkage factors for the elements of \code{Mu}.
 It can include the following elements:
