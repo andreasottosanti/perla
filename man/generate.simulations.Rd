@@ -9,6 +9,7 @@ generate.simulations(
   K = NULL,
   d = NULL,
   X = NULL,
+  Beta = NULL,
   Sigma = NULL,
   z = NULL,
   Mu = NULL,
@@ -31,6 +32,8 @@ to simulate from.}
 \item{d}{Number of variables (if \code{Sigma} is passed, it is ignored).}
 
 \item{X}{(optional) a data.frame containing some possible covariates. If passed, each value of the matrix of regression coefficients will be generated using \code{rnorm(1, 0, range.beta)}.}
+
+\item{Beta}{(optional) a matrix of regression coefficients. It must have \code{p} rows and \code{d} columns. If passed, the regression coefficients are no longer generated randomly.}
 
 \item{Sigma}{(optional) correlation matrix of the variables.}
 

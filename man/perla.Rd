@@ -44,10 +44,12 @@ extracted from \code{y}.}
 \item If \code{cont}, then \code{rho} is assumed a priori to come from a \code{dbeta(x, 2, 18)} with probability \code{p.spike}, or from a \code{dbeta(x, 18, 2)} with probability \code{1 - p.spike}.
 }}
 
-\item{rho.value}{Fixed value for the \code{rho} prior (default \code{0.99}).}
+\item{rho.value}{A value for the \code{rho} parameter of the CAR (default is 1).
+If \code{prior.rho == 'const'}, then \code{rho.value} remains fixed, otherwise it is used to initialise the MCMC algorithm.}
 
-\item{p.spike}{If the parameter \code{prior.rho}  is set to \code{disc}, \code{p.spike}
-indicates the probability of \code{rho} being \code{0}.}
+\item{p.spike}{If \code{prior.rho == 'disc'}, then \code{p.spike}
+gives the probability that \code{rho} is a priori equal to \code{0}. If \code{prior.rho == 'cont'}, then \code{p.spike}
+gives the probability that \code{rho} is a priori drawn from a \code{dbeta(x, 2, 18)}.}
 
 \item{prior.tau}{Type of prior on the \code{tau} parameter of the CAR.
 \itemize{

@@ -27,6 +27,7 @@
 #' @param z (optional) a vector of clustering labels. If passed, the clusters will not be generated randomly using the multinomial distribution, and `K` will be set equal to the number of unique values of `z`.
 #' @param Mu (optional) a matrix of cluster centroids. It must have `K` rows and `d` columns. If passed, the cluster centroids are no longer generated randomly.
 #' @param range.beta (optional) the standard deviation of the Gaussian distribution used to generate the regression coefficients
+#' @param Beta (optional) a matrix of regression coefficients. It must have `p` rows and `d` columns. If passed, the regression coefficients are no longer generated randomly.
 #'
 #' @return
 #' The function returns the map and the simulated data.
@@ -65,6 +66,7 @@ generate.simulations <- function(spatial.map,
                                  K = NULL,
                                  d = NULL,
                                  X = NULL,
+                                 Beta = NULL,
                                  Sigma = NULL,
                                  z = NULL,
                                  Mu = NULL,
@@ -121,14 +123,19 @@ generate.simulations <- function(spatial.map,
     for(j in 1:d)
       if(runif(1) < (1-prob.null.centroid)) Mu[,j] <- runif(K, -range.mu, range.mu) else Mu[,j] <- 0}
 
-  # generate the regression coefficients
-  B <- NULL
-  if(!is.null(X)){
-    if(!is.data.frame(X)) stop("X is not a data.frame object")
-    x <- model.matrix(~.-1, X)
-    p <- ncol(x)
-    B <- matrix(rnorm(p * d, 0, range.beta), p, d)
+  # generate the regression coefficients, if they aren't given in input
+  if(is.null(Beta)){
+    if(!is.null(X)){
+      if(!is.data.frame(X)) stop("X is not a data.frame object")
+      x <- model.matrix(~.-1, X)
+      p <- ncol(x)
+      B <- matrix(rnorm(p * d, 0, range.beta), p, d)
+    }
+  } else {
+    if(ncol(X) != nrow(Beta)) stop("The number of columns of X does not match the number of rows of Beta")
+    B <- Beta
   }
+
 
   # generate Sigma, correlation matrix across causes of death, if it isn't given in input
   if(is.null(Sigma)){
