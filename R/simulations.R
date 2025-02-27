@@ -124,16 +124,16 @@ generate.simulations <- function(spatial.map,
       if(runif(1) < (1-prob.null.centroid)) Mu[,j] <- runif(K, -range.mu, range.mu) else Mu[,j] <- 0}
 
   # generate the regression coefficients, if they aren't given in input
-  if(is.null(Beta)){
-    if(!is.null(X)){
-      if(!is.data.frame(X)) stop("X is not a data.frame object")
-      x <- model.matrix(~.-1, X)
-      p <- ncol(x)
-      B <- matrix(rnorm(p * d, 0, range.beta), p, d)
+  if(!is.null(X)){
+    if(!is.data.frame(X)) stop("X is not a data.frame object")
+    x <- model.matrix(~.-1, X)
+    p <- ncol(x)
+    if(is.null(Beta)){
+        B <- matrix(rnorm(p * d, 0, range.beta), p, d)
+    } else {
+      if(ncol(X) != nrow(Beta)) stop("The number of columns of X does not match the number of rows of Beta")
+      B <- Beta
     }
-  } else {
-    if(ncol(X) != nrow(Beta)) stop("The number of columns of X does not match the number of rows of Beta")
-    B <- Beta
   }
 
 
