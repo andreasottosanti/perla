@@ -1,6 +1,6 @@
-#' Marginal correlation of outcomes
+#' Marginal correlation of the outcome variables
 #'
-#' This function derives the posterior distributions of the marginal correlations across outcomes.
+#' This function derives the posterior distributions of the marginal correlations across outcome variables based on the MCMC runs.
 #'
 #' @param values an object of class `perla`.
 #'
