@@ -7,7 +7,7 @@
 information.criteria(values, loglikelihood.values = NULL)
 }
 \arguments{
-\item{values}{Output of function \code{perla}.}
+\item{values}{an object of class \code{perla}.}
 
 \item{loglikelihood.values}{The log-likelihood values at each iteration of the
 MCMC. If NULL (default) the log-likelihood values are recovered directly from the

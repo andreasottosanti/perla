@@ -3,7 +3,7 @@
 #' @description
 #' This function computes the DIC3 value of a `perla` model.
 #'
-#' @param values Output of function `perla`.
+#' @param values an object of class `perla`.
 #'
 #' @param loglikelihood.values The log-likelihood values at each iteration of the
 #' MCMC. If NULL (default) the log-likelihood values are recovered directly from the

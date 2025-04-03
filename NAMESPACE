@@ -3,6 +3,7 @@
 export(build_Polygon_squared_regions)
 export(generate.simulations)
 export(information.criteria)
+export(marginal_correlations)
 export(merge.perla)
 export(perla)
 export(posterior_predictive_sampling)

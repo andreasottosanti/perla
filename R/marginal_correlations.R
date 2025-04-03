@@ -1,0 +1,19 @@
+#' Marginal correlation of outcomes
+#'
+#' This function derives the posterior distributions of the marginal correlations across outcomes.
+#'
+#' @param values an object of class `perla`.
+#'
+#' @return an object of class `perla`, which contains also `Corr`, an array of the same dimension of `Sigma` collecting the marginal correlation matrix at every MCMC iteration.
+#' @export
+#'
+marginal_correlations <- function(values){
+  R <- dim(values)$Sigma[3]
+  Corr <- values$Sigma
+  for(i in 1:R){
+    W <- diag(1/sqrt(diag(values$Sigma[,,i])))
+    Corr[,,i] <- W %*% Corr[,,i] %*% W
+  }
+  values$Corr <- Corr
+  values
+}
