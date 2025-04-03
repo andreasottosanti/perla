@@ -8,7 +8,7 @@
 #' @export
 #'
 marginal_correlations <- function(values){
-  R <- dim(values)$Sigma[3]
+  R <- dim(values$Sigma)[3]
   Corr <- values$Sigma
   for(i in 1:R){
     W <- diag(1/sqrt(diag(values$Sigma[,,i])))
