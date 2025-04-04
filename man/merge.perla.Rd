@@ -11,7 +11,7 @@ merge.perla(values)
 parallel runs of the same model.}
 }
 \value{
-An object of class \code{perla}. It contains an object called \code{chains},
+An object of class \code{perla}. It contains also an object called \code{chains},
 which states from which chain the elements come from.
 }
 \description{

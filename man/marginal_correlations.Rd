@@ -2,7 +2,7 @@
 % Please edit documentation in R/marginal_correlations.R
 \name{marginal_correlations}
 \alias{marginal_correlations}
-\title{Marginal correlation of outcomes}
+\title{Marginal correlation of the outcome variables}
 \usage{
 marginal_correlations(values)
 }
@@ -13,5 +13,5 @@ marginal_correlations(values)
 an object of class \code{perla}, which contains also \code{Corr}, an array of the same dimension of \code{Sigma} collecting the marginal correlation matrix at every MCMC iteration.
 }
 \description{
-This function derives the posterior distributions of the marginal correlations across outcomes.
+This function derives the posterior distributions of the marginal correlations across outcome variables based on the MCMC runs.
 }

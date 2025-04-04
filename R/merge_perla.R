@@ -9,7 +9,7 @@
 #' @param values A list of `perla` objects. These objects must be different
 #' parallel runs of the same model.
 #'
-#' @return An object of class `perla`. It contains an object called `chains`,
+#' @return An object of class `perla`. It contains also an object called `chains`,
 #' which states from which chain the elements come from.
 #'
 #' @export
@@ -28,10 +28,14 @@ merge.perla <- function(values){
     results$Sigma <- abind(results$Sigma, values[[i]]$Sigma)
     results$Prob <- abind(results$Prob, values[[i]]$Prob)
     results$Rho <- rbind(results$Rho)
-    if("Phi" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Phi <- values[[i]]$shrinkage.parameters$Phi
-    if("Zeta.d" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.d <- values[[i]]$shrinkage.parameters$Zeta.d
-    if("Zeta.c" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.c <- values[[i]]$shrinkage.parameters$Zeta.c
-    if("Zeta.cd" %in% names(results$shrinkage.parameters)) results$shrinkage.parameters$Zeta.cd <- values[[i]]$shrinkage.parameters$Zeta.cd
+    if("Phi" %in% names(results$shrinkage.parameters))
+      results$shrinkage.parameters$Phi <- rbind(results$shrinkage.parameters$Phi, values[[i]]$shrinkage.parameters$Phi)
+    if("Zeta.d" %in% names(results$shrinkage.parameters))
+      results$shrinkage.parameters$Zeta.d <- rbind(results$shrinkage.parameters$Zeta.d, values[[i]]$shrinkage.parameters$Zeta.d)
+    if("Zeta.c" %in% names(results$shrinkage.parameters))
+      results$shrinkage.parameters$Zeta.c <- rbind(results$shrinkage.parameters$Zeta.c, values[[i]]$shrinkage.parameters$Zeta.c)
+    if("Zeta.cd" %in% names(results$shrinkage.parameters))
+      results$shrinkage.parameters$Zeta.cd <- rbind(values[[i]]$shrinkage.parameters$Zeta.cd, results$shrinkage.parameters$Zeta.cd)
     results$acceptance.rho <- rbind(results$acceptance.rho, values[[i]]$acceptance.rho)
     chains <- c(chains, rep(i, dim(values[[i]]$Mu)[3]))
   }
