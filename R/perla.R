@@ -73,6 +73,7 @@
 #' It is ignored if `prior.tau == 'const'`.
 #' @param tau.tuning A tuning parameter used when `prior.tau` is set to `'metropolis'`.
 #' The logarithm of a candidate value is drawn from a Gaussian distribution centered in the logarithm of the parameter value at the previous iteration, and with standard deviation `tau.tuning`.
+#' @param seed (default `NULL`) if passed, it uses its value to set the simulation seed.
 #' @return
 #' An object of class `perla`.
 #'
@@ -108,7 +109,10 @@ perla <- function(y, W = NULL, K, R = 10^4,
                   mu0 = NULL,
                   Sigma0 = NULL,
                   burnin = NULL,
-                  initialization = NULL){
+                  initialization = NULL,
+                  seed = NULL){
+
+  if(!is.null(seed)) set.seed(seed)
   if("SpatialPolygonsDataFrame" %in% class(y)){
     if(is.null(W)) W <- poly2adjmat(y)
     y <- as.matrix(y@data)

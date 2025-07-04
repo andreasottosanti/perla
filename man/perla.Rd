@@ -21,7 +21,8 @@ perla(
   mu0 = NULL,
   Sigma0 = NULL,
   burnin = NULL,
-  initialization = NULL
+  initialization = NULL,
+  seed = NULL
 )
 }
 \arguments{
@@ -95,6 +96,8 @@ will run for \code{R + 1} iterations.}
 \item{initialization}{It can be either an object of class \code{perla} or a list
 of starting points. In the last case, each list element must be named after
 the parameters to be initialized. Names include \code{Mu}, \code{Prob}, \code{Z}, \code{Sigma}, \code{Rho}.}
+
+\item{seed}{(default \code{NULL}) if passed, it uses its value to set the simulation seed.}
 }
 \value{
 An object of class \code{perla}.

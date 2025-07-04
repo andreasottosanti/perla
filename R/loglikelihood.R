@@ -13,6 +13,7 @@
 #'
 
 recover.loglikelihood <- function(values, burnin = NULL, type = "j"){
+  if(class(values) != "perla") stop("values must be an object of class 'perla'")
   if(is.null(burnin)) to.keep <- 1:dim(values$Z)[3] else
     to.keep <- setdiff(1:dim(values$Z)[3], burnin)
   y <- values$y
@@ -50,6 +51,7 @@ recover.loglikelihood <- function(values, burnin = NULL, type = "j"){
       }
     output <- list(val = val, single.val = single.values)
     } else
-      stop("log-likelihood type not recognized. Please select 'm' or 'j'")
-  output
+      stop("log-likelihood type not recognised. Please select 'm' or 'j'")
+  values$loglik <- output
+  values
 }

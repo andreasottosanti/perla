@@ -16,10 +16,11 @@
 #'
 
 information.criteria <- function(values, loglikelihood.values = NULL){
+  if(class(values) != "perla") stop("values must be an object of class 'perla'")
   if(is.null(loglikelihood.values))
     loglikelihood.values <- recover.loglikelihood(values, type = "m") else
       warning("log-likelihood values passed in input. Are they marginal log-likelihood values?")
   pen <- 2*sum(log(rowMeans(loglikelihood.values$single.val)))
-  DIC3 <- -4*mean(loglikelihood.values$val) + pen
-  return(DIC3)
+  values$DIC3 <- -4*mean(loglikelihood.values$val) + pen
+  return(values)
 }
