@@ -10,7 +10,7 @@
 #' `perla` object passed as input.
 #'
 #' @return
-#' The information criteria of the estimated `perla` model. The smaller is the value, the better is the model fitting.
+#' an object of class `perla` that contains also `DIC3`, the information criterion value of the estimated `perla` model. The smaller is the value, the better is the model fitting.
 #'
 #' @export
 #'
@@ -18,7 +18,7 @@
 information.criteria <- function(values, loglikelihood.values = NULL){
   if(class(values) != "perla") stop("values must be an object of class 'perla'")
   if(is.null(loglikelihood.values))
-    loglikelihood.values <- recover.loglikelihood(values, type = "m") else
+    loglikelihood.values <- recover.loglikelihood.marginal(values) else
       warning("log-likelihood values passed in input. Are they marginal log-likelihood values?")
   pen <- 2*sum(log(rowMeans(loglikelihood.values$single.val)))
   values$DIC3 <- -4*mean(loglikelihood.values$val) + pen

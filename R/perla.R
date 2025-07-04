@@ -329,7 +329,8 @@ perla <- function(y, W = NULL, K, R = 10^4,
   if("cd" %in% mean.penalty) shrinkage.parameters$Zeta.cd <- Zeta.cd
   results <- list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Tau = Tau, Rho = Rho,
                   shrinkage.parameters = shrinkage.parameters,
-                  acceptance.rho = acceptance.rho, acceptance.tau = acceptance.tau, y = y)
+                  acceptance.rho = acceptance.rho, acceptance.tau = acceptance.tau, y = y,
+                  mean.penalty = mean.penalty)
   class(results) <- "perla"
   return(results)
 

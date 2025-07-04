@@ -4,14 +4,15 @@
 \alias{recover.loglikelihood}
 \title{Log-likelihood computation}
 \usage{
-recover.loglikelihood(values, burnin = NULL, type = "j")
+recover.loglikelihood(values, burnin = NULL)
 }
 \arguments{
 \item{values}{an object of class \code{perla}}
 
 \item{burnin}{a vector of indexes denoting the MCMC draws to be discarded (default \code{NULL} means every draw is kept)}
-
-\item{type}{if \code{j} (default), it returns the joint \verb{(y,z)} log-likelihood values; if \code{m}, it returns the marginal log-likelihood values of \code{y}.}
+}
+\value{
+an object of class \code{perla} that contains also \code{loglik}, the vector of log-likelihood values for every MCMC itereation.
 }
 \description{
 This function returns the log-likelihood value at each iteration of the MCMC.

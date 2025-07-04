@@ -10,7 +10,7 @@ marginal_correlations(values)
 \item{values}{an object of class \code{perla}.}
 }
 \value{
-an object of class \code{perla}, which contains also \code{Corr}, an array of the same dimension of \code{Sigma} collecting the marginal correlation matrix at every MCMC iteration.
+an object of class \code{perla} that contains also \code{Corr}, an array of the same dimension of \code{Sigma} collecting the marginal correlation matrix at every MCMC iteration.
 }
 \description{
 This function derives the posterior distributions of the marginal correlations across outcome variables based on the MCMC runs.

@@ -14,7 +14,7 @@ MCMC. If NULL (default) the log-likelihood values are recovered directly from th
 \code{perla} object passed as input.}
 }
 \value{
-The information criteria of the estimated \code{perla} model. The smaller is the value, the better is the model fitting.
+an object of class \code{perla} that contains also \code{DIC3}, the information criterion value of the estimated \code{perla} model. The smaller is the value, the better is the model fitting.
 }
 \description{
 This function computes the DIC3 value of a \code{perla} model.
