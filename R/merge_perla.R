@@ -25,6 +25,7 @@ merge.perla <- function(values){
   for(i in 2:length(values)){
     results$Mu <- abind(results$Mu, values[[i]]$Mu)
     results$Z <- abind(results$Z, values[[i]]$Z)
+    results$Responsabilities <- abind(results$Responsabilities, values[[i]]$Responsabilities)
     results$Sigma <- abind(results$Sigma, values[[i]]$Sigma)
     results$Prob <- abind(results$Prob, values[[i]]$Prob)
     results$Rho <- rbind(results$Rho)

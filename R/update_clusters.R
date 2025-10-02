@@ -1,4 +1,4 @@
-update_Z <- function(y, mu, Sigma, Psi){
+update_responsabilities <- function(y, mu, Sigma, Psi){
   if(is.vector(Psi)) Psi <- matrix(Psi, ncol = 1)
   n <- nrow(y)
   K <- ncol(Psi)+1
@@ -8,8 +8,15 @@ update_Z <- function(y, mu, Sigma, Psi){
     q1 <- y %*% solve(Sigma) %*% mu[k,] - as.vector(.5 * t(mu[k,]) %*% solve(Sigma) %*% mu[k,])
     Prob[,k] <- exp(q1)*pp[,k]
   }
+  return(Prob)
+}
+
+update_Z <- function(responsabilities){
+  n <- nrow(responsabilities)
+  K <- ncol(responsabilities)
+  Z <- matrix(0, n, K)
   for(i in 1:n){
-    z <- sample(x = 1:K, size = 1, prob = Prob[i,])
+    z <- sample(x = 1:K, size = 1, prob = responsabilities[i,])
     Z[i,z] <- 1
   }
   Z

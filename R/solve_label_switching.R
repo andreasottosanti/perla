@@ -21,7 +21,7 @@ remove.label.switching <- function(values,
     to.keep <- setdiff(1:dim(values$Z)[3], burnin)
   if(is.null(loglikelihood.values)){
     #cat("[WARNING]: Log-likelihood values are not provided but required.")
-    loglikelihood.values <- recover.loglikelihood(values, burnin)
+    values <- recover.loglikelihood(values, burnin)
   }
   y <- values$y
   Z <- values$Z[,,to.keep]  # n x K x R
@@ -32,7 +32,7 @@ remove.label.switching <- function(values,
   M <- aperm(Mu, perm = c(3,1,2))     # R x K x d
   P <- aperm(Prob, perm = c(3,1,2))   # R x n x K
   Zvec <- convert.Z.matrix_to_vector(Z)
-  mapindex <- which.max(loglikelihood.values)
+  mapindex <- which.max(values$loglik)
 
 
 # relabelling -------------------------------------------------------------

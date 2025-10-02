@@ -138,7 +138,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   R.kept <- length(tokeep)
   Rho <- matrix(0, R.kept, K-1)
   Mu <- array(0, dim = c(K, d, R.kept))
-  Z <- Prob <- array(0, dim = c(n, K, R.kept))
+  Z <- Prob <- Responsabilities <- array(0, dim = c(n, K, R.kept))
   Sigma <- array(0, dim = c(d, d, R.kept))
   Tau <- numeric(R.kept)
   Phi <- Zeta.d <- Zeta.c <- Zeta.cd <- NULL
@@ -255,10 +255,11 @@ perla <- function(y, W = NULL, K, R = 10^4,
 
 
     # --update Z
-    Z.current <- update_Z(y = y,
-                          mu = Mu.current,
-                          Sigma = Sigma.current,
-                          Psi = Psi.current)
+    responsabilities.current <- update_responsabilities(y = y,
+                                                        mu = Mu.current,
+                                                        Sigma = Sigma.current,
+                                                        Psi = Psi.current)
+    Z.current <- update_Z(responsabilities.current)
 
     # --update omega and psi
     updated.psi.omega <- update.psi.omega(psi = Psi.current,
@@ -311,6 +312,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
       Mu[,,r-max(burnin)] <- Mu.current
       Z[,,r-max(burnin)] <- Z.current
       Prob[,,r-max(burnin)] <- Prob.current
+      Responsabilities[,,r-max(burnin)] <- responsabilities.current/rowSums(responsabilities.current)
       Rho[r-max(burnin),] <- Rho.current
       Sigma[,,r-max(burnin)] <- Sigma.current
       Tau[r-max(burnin)] <- Tau.current
@@ -327,7 +329,7 @@ perla <- function(y, W = NULL, K, R = 10^4,
   if("d" %in% mean.penalty) shrinkage.parameters$Zeta.d <- Zeta.d
   if("c" %in% mean.penalty) shrinkage.parameters$Zeta.c <- Zeta.c
   if("cd" %in% mean.penalty) shrinkage.parameters$Zeta.cd <- Zeta.cd
-  results <- list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Tau = Tau, Rho = Rho,
+  results <- list(Mu = Mu, Z = Z, Sigma = Sigma, Prob = Prob, Responsabilities = Responsabilities, Tau = Tau, Rho = Rho,
                   shrinkage.parameters = shrinkage.parameters,
                   acceptance.rho = acceptance.rho, acceptance.tau = acceptance.tau, y = y,
                   mean.penalty = mean.penalty)
