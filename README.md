@@ -8,7 +8,6 @@ Install the library using the command
 devtools::install_github("andreasottosanti/perla")
 ```
 
-\bigskip
 
 **Acknowledgments**
 
