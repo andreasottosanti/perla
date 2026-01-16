@@ -39,7 +39,7 @@ remove.label.switching2 <- function(values,
   # Prob: R x K x n
   # and then merged w.r.t. the third dimension
 
-  mcmc.values <- aperm(results$Mu, perm = c(3,1,2))
+  mcmc.values <- aperm(Mu, perm = c(3,1,2))
   if(F){
   if("c" %in% values$mean.penalty){
     C.values <- array(0, dim = c(dim(Z)[3], dim(Z)[2], 1))
